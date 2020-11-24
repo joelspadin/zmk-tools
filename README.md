@@ -19,3 +19,6 @@ Discord link at the bottom of the [ZMK Firmware homepage](https://zmkfirmware.de
 -   Keymap parsing uses the amazing [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) library.
 -   Some parsing code is adapted from [Tree Sitter for VSCode](https://github.com/georgewfraser/vscode-tree-sitter)
     (Copyright &copy; 2016 George Fraser, [MIT license](https://github.com/georgewfraser/vscode-tree-sitter/blob/master/LICENSE.md)).
+-   The [ZMK logo](https://github.com/zmkfirmware/zmk/blob/main/docs/static/img/zmk_logo.svg)
+    is part of the [ZMK documentation](https://github.com/zmkfirmware/zmk/tree/main/docs)
+    and is licensed [CC-BY-NC-SA](http://creativecommons.org/licenses/by-nc-sa/4.0/).
