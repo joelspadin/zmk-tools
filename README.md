@@ -14,6 +14,8 @@ Discord link at the bottom of the [ZMK Firmware homepage](https://zmkfirmware.de
 -   Code completion in `bindings` and `sensor-bindings` properties.
 -   Very basic syntax checking (as of this writing, Tree-sitter does not provide useful error messages).
 
+For syntax highlighting in `.keymap` files, use the [DeviceTree extension](https://marketplace.visualstudio.com/items?itemName=plorefice.devicetree).
+
 ## Credits
 
 -   Keymap parsing uses the amazing [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) library.
