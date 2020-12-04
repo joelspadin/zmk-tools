@@ -31,7 +31,7 @@ type SignatureResult = vscode.ProviderResult<vscode.SignatureHelp>;
 /**
  * Manages all code analysis for .keymap files.
  */
-export class Analyzer implements vscode.CompletionItemProvider, vscode.SignatureHelpProvider, vscode.Disposable {
+export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.SignatureHelpProvider, vscode.Disposable {
     private disposable: vscode.Disposable;
     private diagnosticCollection: vscode.DiagnosticCollection;
     private errorQuery: Query;

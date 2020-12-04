@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import { Analyzer } from './Analyzer';
+import { KeymapAnalyzer } from './KeymapAnalyzer';
 import { KeymapParser } from './Parser';
 
 export async function activate(context: vscode.ExtensionContext) {
     const parser = await KeymapParser.init();
-    context.subscriptions.push(parser, new Analyzer(parser));
+    context.subscriptions.push(parser, new KeymapAnalyzer(parser));
 }
 
 export function deactivate() {}
