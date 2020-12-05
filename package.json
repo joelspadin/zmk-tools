@@ -20,7 +20,7 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.keymap"
+    "onLanguage:dts"
   ],
   "main": "./out/extension.js",
   "contributes": {
