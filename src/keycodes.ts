@@ -4,6 +4,9 @@ import markdownEscape = require('markdown-escape');
 import codes from './zmk/data/hid';
 import oses from './zmk/data/operating-systems';
 import { KeyDefinition } from './zmk/data/hid';
+import { addMissingSystemInclude, IncludeInfo } from './keymap';
+
+const KEYS_INCLUDE = 'dt-bindings/zmk/keys.h';
 
 const keycodeCompletions: vscode.CompletionItem[] = [];
 const modifierCompletions: vscode.CompletionItem[] = [];
@@ -11,9 +14,16 @@ const modifierCompletions: vscode.CompletionItem[] = [];
 /**
  * Gets completion items for a keycode value.
  */
-export function getKeycodeCompletions(): vscode.CompletionItem[] {
+export function getKeycodeCompletions(includeInfo: IncludeInfo): vscode.CompletionItem[] {
     if (keycodeCompletions.length === 0) {
         initKeycodeCompletions();
+    }
+
+    const additionalTextEdits = addMissingSystemInclude(includeInfo, KEYS_INCLUDE);
+    if (additionalTextEdits.length > 0) {
+        return keycodeCompletions.map((item) => {
+            return { ...item, additionalTextEdits };
+        });
     }
 
     return keycodeCompletions;
@@ -22,9 +32,16 @@ export function getKeycodeCompletions(): vscode.CompletionItem[] {
 /**
  * Gets completion items for a modifier value.
  */
-export function getModifierCompletions(): vscode.CompletionItem[] {
+export function getModifierCompletions(includeInfo: IncludeInfo): vscode.CompletionItem[] {
     if (modifierCompletions.length === 0) {
         initModifierCompletions();
+    }
+
+    const additionalTextEdits = addMissingSystemInclude(includeInfo, KEYS_INCLUDE);
+    if (additionalTextEdits.length > 0) {
+        return modifierCompletions.map((item) => {
+            return { ...item, additionalTextEdits };
+        });
     }
 
     return modifierCompletions;

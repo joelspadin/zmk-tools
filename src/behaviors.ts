@@ -2,8 +2,10 @@ import * as vscode from 'vscode';
 import Parser = require('web-tree-sitter');
 
 import { getKeycodeCompletions, getModifierCompletions } from './keycodes';
+import { addMissingSystemInclude, IncludeInfo } from './keymap';
 import { truncateAtWhitespace } from './util';
 
+const BEHAVIORS_INCLUDE = 'behaviors.dtsi';
 const PREFERRED_BEHAVIOR = '&kp';
 
 export type ParameterType = 'keycode' | 'modifier' | 'integer';
@@ -15,6 +17,7 @@ export interface ParameterValue {
 
 export type Parameter = vscode.ParameterInformation & {
     type?: ParameterType;
+    include?: string;
     values?: ParameterValue[];
 };
 
@@ -54,13 +57,19 @@ export function behaviorsToSignatures(
  * @param behaviors A list of behaviors valid for this location.
  * @param range The range to replace when a completion is committed.
  */
-export function behaviorsToCompletions(behaviors: readonly Behavior[], range?: vscode.Range): vscode.CompletionItem[] {
+export function behaviorsToCompletions(
+    behaviors: readonly Behavior[],
+    includeInfo: IncludeInfo,
+    range?: vscode.Range
+): vscode.CompletionItem[] {
+    const additionalTextEdits = addMissingSystemInclude(includeInfo, BEHAVIORS_INCLUDE);
+
     function getEntry(b: Behavior): [string, vscode.CompletionItem] {
         const label = truncateAtWhitespace(b.label);
         const completion = new vscode.CompletionItem(label, vscode.CompletionItemKind.Function);
         completion.documentation = new vscode.MarkdownString(b.documentation);
         completion.range = range;
-        completion.commitCharacters = [' '];
+        completion.additionalTextEdits = additionalTextEdits;
 
         // TODO: remember the last-used behavior and prefer that.
         if (label === PREFERRED_BEHAVIOR) {
@@ -79,21 +88,25 @@ export function behaviorsToCompletions(behaviors: readonly Behavior[], range?: v
  * Gets a list of code completions for the active parameter.
  * @param parameter The active parameter.
  */
-export function parameterToCompletions(parameter: Parameter): vscode.CompletionItem[] {
+export function parameterToCompletions(parameter: Parameter, includeInfo: IncludeInfo): vscode.CompletionItem[] {
     if (parameter.values) {
+        const additionalTextEdits = parameter.include ? addMissingSystemInclude(includeInfo, parameter.include) : [];
+
         return parameter.values.map((v) => {
             const completion = new vscode.CompletionItem(v.label, vscode.CompletionItemKind.EnumMember);
             completion.documentation = new vscode.MarkdownString(v.documentation);
+            completion.additionalTextEdits = additionalTextEdits;
+
             return completion;
         });
     }
 
     switch (parameter.type) {
         case 'keycode':
-            return getKeycodeCompletions();
+            return getKeycodeCompletions(includeInfo);
 
         case 'modifier':
-            return getModifierCompletions();
+            return getModifierCompletions(includeInfo);
     }
 
     return [];
@@ -266,6 +279,7 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         parameters: [
             {
                 label: 'ACTION',
+                include: 'dt-bindings/zmk/bt.h',
                 values: [
                     {
                         label: 'BT_CLR',
@@ -300,6 +314,7 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         parameters: [
             {
                 label: 'BT_SEL',
+                include: 'dt-bindings/zmk/bt.h',
                 values: [
                     {
                         label: 'BT_SEL',
@@ -320,6 +335,7 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         parameters: [
             {
                 label: 'ACTION',
+                include: 'dt-bindings/zmk/outputs.h',
                 values: [
                     {
                         label: 'OUT_USB',
@@ -342,6 +358,7 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         documentation: '[RGB underglow command](https://zmkfirmware.dev/docs/behaviors/lighting#rgb-underglow)',
         parameters: [
             {
+                include: 'dt-bindings/zmk/rgb.h',
                 label: 'ACTION',
                 values: RGB_VALUES,
             },
@@ -353,6 +370,7 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         parameters: [
             {
                 label: 'ACTION',
+                include: 'dt-bindings/zmk/ext_power.h',
                 values: [
                     {
                         label: 'EP_OFF',

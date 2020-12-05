@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.2.0
+
+-   Keymap code completion now automatically inserts missing includes.
+-   Adjusted keymap code completion so it doesn't trigger on space when you're just adjusting alignment.
+    -   Space no longer triggers completion of behaviors. Use tab or enter instead.
+
 ## 0.1.0
 
 -   Initial release
