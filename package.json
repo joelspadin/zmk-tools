@@ -20,6 +20,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:dts",
     "onLanguage:zmk-keymap"
   ],
   "main": "./out/extension.js",
