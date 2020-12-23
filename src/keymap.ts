@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export const SELECTOR: vscode.DocumentSelector = {
-    pattern: '**/*.keymap',
+    language: 'zmk-keymap',
     scheme: 'file',
 };
 

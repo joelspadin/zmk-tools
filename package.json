@@ -20,19 +20,33 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:dts"
+    "onLanguage:zmk-keymap"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
-        "id": "dts",
+        "id": "zmk-keymap",
         "aliases": [
           "ZMK Keymap"
         ],
         "extensions": [
           ".keymap"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "dts",
+        "extensions": [
+          ".overlay"
         ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "zmk-keymap",
+        "scopeName": "source.dts",
+        "path": "./syntaxes/dts.tmLanguage.json"
       }
     ]
   },

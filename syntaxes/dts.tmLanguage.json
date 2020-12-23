@@ -1,0 +1,193 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "scopeName": "source.dts",
+  "name": "DTS",
+  "comment": "DeviceTree Language syntax",
+  "fileTypes": ["keymap", "overlay"],
+  "patterns": [
+    {
+      "comment": "Line comments",
+      "begin": "//",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.dts"
+        }
+      },
+      "end": "$",
+      "name": "comment.line.double-slash.dts"
+    },
+    {
+      "comment": "Include directives",
+      "match": "(#include)(\\s+(<|\")([^>\"]*)(>|\"))",
+      "captures": {
+        "1": {
+          "name": "keyword.directive.dts"
+        },
+        "2": {
+          "name": "string.quoted.double.dts"
+        },
+        "3": {
+          "name": "punctuation.definition.string.begin.dts"
+        },
+        "4": {
+          "name": "entity.name.include.dts"
+        },
+        "5": {
+          "name": "punctuation.definition.string.end.dts"
+        }
+      }
+    },
+    {
+      "comment": "Binary properties",
+      "begin": "\\[",
+      "end": "\\]",
+      "name": "constant.numeric.dts"
+    },
+    {
+      "comment": "String literals",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.dts"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.dts"
+        }
+      },
+      "name": "string.quoted.double.dts",
+      "patterns": [
+        {
+          "include": "#strings"
+        }
+      ]
+    },
+    {
+      "comment": "Labels",
+      "match": "^\\s*([0-9a-zA-Z_\\-+,.]+):",
+      "captures": {
+        "1": {
+          "name": "entity.name.type.dts"
+        }
+      }
+    },
+    {
+      "comment": "Node names",
+      "match": "(/|([[:alpha:][:digit:]\\-_]+)(@[0-9a-fA-F]+)?)\\s*{",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.dts"
+        }
+      }
+    },
+    {
+      "comment": "Cell properties",
+      "begin": "<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.list.begin.dts"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.list.end.dts"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#references"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "include": "#macros"
+        },
+        {
+          "include": "#blockcomments"
+        }
+      ]
+    },
+    {
+      "include": "#references"
+    },
+    {
+      "include": "#blockcomments"
+    }
+  ],
+  "repository": {
+    "brackets": {
+      "patterns": [
+        {
+          "match": "\\{|\\}",
+          "name": "punctuation.other.bracket.curly.go"
+        },
+        {
+          "match": "\\(|\\)",
+          "name": "punctuation.other.bracket.round.go"
+        },
+        {
+          "match": "\\[|\\]",
+          "name": "punctuation.other.bracket.square.go"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b#include\\b",
+          "name": "keyword.directive.dts"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.dts",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.dts",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "blockcomments": {
+      "name": "comment.block.dts",
+      "begin": "/\\*",
+      "end": "\\*/",
+      "patterns": [
+        {
+          "name": "punctuation.definition.comment.dts",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "references": {
+      "patterns": [
+        {
+          "match": "&[0-9a-zA-Z,._\\-+]+",
+          "name": "variable.name.dts"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "(0x[0-9a-fA-F]+|[[:digit:]]+)",
+          "name": "constant.numeric.dts"
+        }
+      ]
+    },
+    "macros": {
+      "patterns": [
+        {
+          "match": "[0-9a-zA-Z_]+",
+          "name": "constant.numeric.dts"
+        }
+      ]
+    }
+  }
+}
