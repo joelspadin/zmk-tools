@@ -21,7 +21,6 @@ import {
     nodesEqual,
     ParseChangedEvent,
 } from './Parser';
-import { Capture, Query, QueryResult } from './query';
 import { stripIncludeQuotes, truncateAtWhitespace } from './util';
 import Parser = require('web-tree-sitter');
 
@@ -36,8 +35,8 @@ type SignatureResult = vscode.ProviderResult<vscode.SignatureHelp>;
 export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.SignatureHelpProvider, vscode.Disposable {
     private disposable: vscode.Disposable;
     private diagnosticCollection: vscode.DiagnosticCollection;
-    private errorQuery: Query;
-    private includeQuery: Query;
+    private errorQuery: Parser.Query;
+    private includeQuery: Parser.Query;
     private updateTimeout?: NodeJS.Timeout;
     private staleDocuments: Set<vscode.TextDocument> = new Set();
 
@@ -311,7 +310,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     }
 }
 
-function* getCaptures(matches: QueryResult[]): Generator<Capture> {
+function* getCaptures(matches: Parser.QueryMatch[]): Generator<Parser.QueryCapture> {
     for (const match of matches) {
         for (const capture of match.captures) {
             yield capture;

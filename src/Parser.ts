@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 import Parser = require('web-tree-sitter');
 
-import { query, Query } from './query';
-
 const GRAMMAR_FILE = `${__dirname}/../tree-sitter-devicetree.wasm`;
 const WHITESPACE_RE = /\s/;
 
@@ -55,8 +53,8 @@ export class KeymapParser implements vscode.Disposable {
     /**
      * Builds a tree-sitter query for keymap files.
      */
-    query(expression: string): Query {
-        return query(this.language, expression);
+    query(expression: string): Parser.Query {
+        return this.language.query(expression);
     }
 
     private getTree(document: vscode.TextDocument): Parser.Tree | undefined {
