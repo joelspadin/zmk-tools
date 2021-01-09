@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.3.0
+
+-   Keymap syntax highlighting now works without the DeviceTree extension.
+-   .overlay files are now automatically associated with the DeviceTree extension.
+-   Updated Tree-sitter. Appears to fix "extension host terminated unexpectedly" errors.
+-   Updated ZMK keycode support data.
+
 ## 0.2.0
 
 -   Keymap code completion now automatically inserts missing includes.
