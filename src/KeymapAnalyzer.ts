@@ -23,6 +23,7 @@ import {
 } from './Parser';
 import { stripIncludeQuotes, truncateAtWhitespace } from './util';
 import Parser = require('web-tree-sitter');
+import { truncate } from 'fs';
 
 const DIAGNOSTICS_UPDATE_DELAY = 500;
 
@@ -228,7 +229,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     private getSignaturesForBindings(args: SignatureArgs, validBehaviors: readonly Behavior[]): SignatureResult {
         const { behavior, paramIndex } = findCurrentBehavior(args);
         if (behavior && paramIndex !== undefined) {
-            const filteredBehaviors = filterBehaviors(validBehaviors, behavior);
+            const filteredBehaviors = filterBehaviors(validBehaviors, behavior, { matchFullWord: true });
             const signatures = behaviorsToSignatures(filteredBehaviors, paramIndex);
             return {
                 signatures,
@@ -383,11 +384,23 @@ function findCurrentBehavior({ node, isAfter }: AnalysisArgs): BehaviorLocation 
     return { behavior: current, paramIndex };
 }
 
-function filterBehaviors(validBehaviors: readonly Behavior[], behavior: Parser.SyntaxNode): Behavior[] {
+function filterBehaviors(
+    validBehaviors: readonly Behavior[],
+    behavior: Parser.SyntaxNode,
+    options?: { matchFullWord: boolean }
+): Behavior[] {
+    const { matchFullWord } = { matchFullWord: false, ...options };
+
     const text = truncateAtWhitespace(behavior.text);
     let filtered = validBehaviors.filter((b) => {
         if (!b.label.startsWith(text)) {
             return false;
+        }
+
+        if (matchFullWord) {
+            if (truncateAtWhitespace(b.label) !== text) {
+                return false;
+            }
         }
 
         if (b.isMatch) {

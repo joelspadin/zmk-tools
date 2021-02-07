@@ -171,6 +171,18 @@ const RGB_VALUES: ParameterValue[] = [
     },
 ];
 
+const KEYCODE_PARAM: Parameter = {
+    label: 'KEYCODE',
+    documentation: 'Key code',
+    type: 'keycode',
+};
+
+const LAYER_PARAM: Parameter = {
+    label: 'LAYER',
+    documentation: 'Layer index',
+    type: 'integer',
+};
+
 /**
  * Behaviors valid for the `bindings` property.
  */
@@ -178,26 +190,14 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
     {
         label: '&kp KEYCODE',
         documentation:
-            '[Key press](https://zmkfirmware.dev/docs/behaviors/key-press)\n\nSends standard keycodes on press/release.',
-        parameters: [
-            {
-                label: 'KEYCODE',
-                documentation: 'Key code',
-                type: 'keycode',
-            },
-        ],
+            '[Key press](https://zmkfirmware.dev/docs/behaviors/key-press)\n\nSends standard key codes on press/release.',
+        parameters: [KEYCODE_PARAM],
     },
     {
         label: '&mo LAYER',
         documentation:
             '[Momentary layer](https://zmkfirmware.dev/docs/behaviors/layers#momentary-layer)\n\nswitches to a layer while the key is held.',
-        parameters: [
-            {
-                label: 'LAYER',
-                documentation: 'Layer index',
-                type: 'integer',
-            },
-        ],
+        parameters: [LAYER_PARAM],
     },
     {
         label: '&lt LAYER TAP',
@@ -205,9 +205,8 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
             '[Layer-tap](https://zmkfirmware.dev/docs/behaviors/layers#layer-tap)\n* **Hold behavior:** switches to a layer\n* **Tap behavior:** sends a keycode',
         parameters: [
             {
-                label: 'LAYER',
+                ...LAYER_PARAM,
                 documentation: 'Layer index to use when held',
-                type: 'integer',
             },
             {
                 label: 'TAP',
@@ -217,16 +216,16 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
         ],
     },
     {
+        label: '&to LAYER',
+        documentation:
+            '[To layer](https://zmkfirmware.dev/docs/behaviors/layers#to-layer)\n\nEnables a layer and disables all other layers except the default layer.',
+        parameters: [LAYER_PARAM],
+    },
+    {
         label: '&tog LAYER',
         documentation:
             '[Toggle layer](https://zmkfirmware.dev/docs/behaviors/layers#toggle-layer)\n\nEnables/disables a layer each time the key is pressed.',
-        parameters: [
-            {
-                label: 'LAYER',
-                documentation: 'Layer index',
-                type: 'integer',
-            },
-        ],
+        parameters: [LAYER_PARAM],
     },
     {
         label: '&trans',
@@ -256,6 +255,24 @@ export const BINDINGS_BEHAVIORS: readonly Behavior[] = [
                 type: 'keycode',
             },
         ],
+    },
+    {
+        label: '&gresc',
+        documentation:
+            'Grave escape\n\nSends `&kp ESCAPE` normally or `&kp GRAVE` when either Shift or GUI modifiers are held.',
+        parameters: [],
+    },
+    {
+        label: '&sk KEYCODE',
+        documentation:
+            '[Sticky key](https://zmkfirmware.dev/docs/behaviors/sticky-key)\n\nSends a key and keeps it pressed until another key is pressed.',
+        parameters: [KEYCODE_PARAM],
+    },
+    {
+        label: '&sl LAYER',
+        documentation:
+            '[Sticky layer](https://zmkfirmware.dev/docs/behaviors/sticky-layer)\n\nActivates a layer until another key is pressed.',
+        parameters: [LAYER_PARAM],
     },
     {
         label: '&reset',
