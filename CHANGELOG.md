@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.0
+
+-   Added code completion for `&to`, `&gresc`, `&sk`, and `&sl`.
+
 ## 0.3.0
 
 -   Keymap syntax highlighting now works without the DeviceTree extension.
