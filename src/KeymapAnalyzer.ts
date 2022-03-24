@@ -23,7 +23,6 @@ import {
 } from './Parser';
 import { stripIncludeQuotes, truncateAtWhitespace } from './util';
 import Parser = require('web-tree-sitter');
-import { truncate } from 'fs';
 
 const DIAGNOSTICS_UPDATE_DELAY = 500;
 
@@ -38,7 +37,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     private diagnosticCollection: vscode.DiagnosticCollection;
     private errorQuery: Parser.Query;
     private includeQuery: Parser.Query;
-    private updateTimeout?: NodeJS.Timeout;
+    private updateTimeout?: ReturnType<typeof setTimeout>;
     private staleDocuments: Set<vscode.TextDocument> = new Set();
 
     public constructor(private parser: KeymapParser) {

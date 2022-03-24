@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+-   Added support for running as a web extension.
+
 ## 0.4.0
 
 -   Added code completion for `&to`, `&gresc`, `&sk`, and `&sl`.

@@ -1,13 +1,28 @@
 import * as vscode from 'vscode';
 import Parser = require('web-tree-sitter');
+import { fetchWasm } from './wasm';
 
-const GRAMMAR_FILE = `${__dirname}/../tree-sitter-devicetree.wasm`;
 const WHITESPACE_RE = /\s/;
 
-async function createParser() {
-    await Parser.init();
+async function initTreeSitter(context: vscode.ExtensionContext) {
+    const wasmUri = vscode.Uri.joinPath(context.extensionUri, './node_modules/web-tree-sitter/tree-sitter.wasm');
+    const wasmBinary = await fetchWasm(wasmUri);
+
+    await Parser.init({ wasmBinary });
+}
+
+async function loadLanguage(context: vscode.ExtensionContext) {
+    const wasmUri = vscode.Uri.joinPath(context.extensionUri, './tree-sitter-devicetree.wasm');
+    const wasmBinary = await fetchWasm(wasmUri);
+
+    return await Parser.Language.load(wasmBinary);
+}
+
+async function createParser(context: vscode.ExtensionContext) {
+    await initTreeSitter(context);
+
     const parser = new Parser();
-    const language = await Parser.Language.load(GRAMMAR_FILE);
+    const language = await loadLanguage(context);
 
     parser.setLanguage(language);
     return { parser, language };
@@ -21,8 +36,8 @@ export interface ParseChangedEvent {
  * Parses `.keymap` files.
  */
 export class KeymapParser implements vscode.Disposable {
-    static async init(): Promise<KeymapParser> {
-        const { parser, language } = await createParser();
+    static async init(context: vscode.ExtensionContext): Promise<KeymapParser> {
+        const { parser, language } = await createParser(context);
         return new KeymapParser(parser, language);
     }
 
