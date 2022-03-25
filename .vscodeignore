@@ -2,7 +2,7 @@
 .vscode-test/**
 .vscode-test-web/**
 dist/test/**
-out/test/**
+dist/web/test/**
 src/**
 zmk/**
 .gitignore
