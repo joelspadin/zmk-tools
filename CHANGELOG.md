@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.5.0
 
 -   Added support for running as a web extension.
 -   Added code completions for `&caps_word`, `&key_repeat`, and `&bl`.
