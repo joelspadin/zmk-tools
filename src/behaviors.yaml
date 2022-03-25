@@ -1,0 +1,304 @@
+# yaml-language-server: $schema=behaviors.schema.json
+
+parameters:
+  keycode: &keycode
+    documentation: Key code
+    label: KEYCODE
+    type: keycode
+
+  layer: &layer
+    documentation: Layer index
+    label: LAYER
+    type: integer
+
+behaviors:
+  bindings:
+    # Key Press https://zmk.dev/docs/behaviors/key-press
+    - label: '&kp KEYCODE'
+      documentation: |
+        [Key press](https://zmk.dev/docs/behaviors/key-press)
+
+        Sends standard key codes on press/release.
+      parameters:
+        - *keycode
+
+    # Layers https://zmk.dev/docs/behaviors/layers
+    - label: '&mo LAYER'
+      documentation: |
+        [Momentary layer](https://zmk.dev/docs/behaviors/layers#momentary-layer)
+
+        Switches to a layer while the key is held.
+      parameters:
+        - *layer
+
+    - label: '&lt LAYER TAP'
+      documentation: |
+        [Layer-tap](https://zmk.dev/docs/behaviors/layers#layer-tap)
+
+        * **On hold:** switches to a layer
+        * **On tap:** sends a keycode
+      parameters:
+        - label: LAYER
+          type: integer
+          documentation: Layer index to use when held
+        - label: TAP
+          type: keycode
+          documentation: Key code to send when tapped
+
+    - label: '&to'
+      documentation: |
+        [To layer](https://zmk.dev/docs/behaviors/layers#to-layer)
+
+        Enables a layer and disables all other layers except the default layer.
+      parameters:
+        - *layer
+
+    - label: '&tog LAYER'
+      documentation: |
+        [Toggle layer](https://zmk.dev/docs/behaviors/layers#toggle-layer)
+
+        Toggles whether a layer is enabled.
+      parameters:
+        - *layer
+
+    # Miscellaneous https://zmk.dev/docs/behaviors/misc
+    - label: '&trans'
+      documentation: |
+        [Transparent](https://zmk.dev/docs/behaviors/misc#transparent)
+
+        Passes key presses down to the next active layer in the stack.
+        Does nothing if on the base layer.
+      parameters: []
+
+    - label: '&none'
+      documentation: |
+        [None](https://zmk.dev/docs/behaviors/misc#none)
+
+        Ignores a key press so it will *not* be passed down to the next active layer in the stack.
+      parameters: []
+
+    # Mod-Tap https://zmk.dev/docs/behaviors/mod-tap
+    - label: '&mt MODIFIER TAP'
+      documentation: |
+        [Mod-tap](https://zmk.dev/docs/behaviors/mod-tap)
+
+        * **On hold:** holds a modifier
+        * **On tap:** sends a keycode
+      parameters:
+        - label: MODIFIER
+          documentation: Modifier to send when held
+          type: modifier
+        - label: TAP
+          documentation: Key code to send when tapped
+          type: keycode
+
+    # Mod-Morph https://zmk.dev/docs/behaviors/mod-morph
+    - label: '&gresc'
+      documentation: |
+        [Grave escape](https://zmk.dev/docs/behaviors/mod-morph)
+
+        Sends `&kp ESCAPE` normally or `&kp GRAVE` when either Shift or GUI modifiers are held.
+      parameters: []
+
+      # Sticky Key https://zmk.dev/docs/behaviors/sticky-key
+    - label: '&sk KEYCODE'
+      documentation: |
+        [Sticky key](https://zmk.dev/docs/behaviors/sticky-key)
+
+        Sends a key and keeps it pressed until another key is pressed.
+      parameters:
+        - *keycode
+
+    # Sticky Layer https://zmk.dev/docs/behaviors/sticky-layer
+    - label: '&sl LAYER'
+      documentation: |
+        [Sticky layer](https://zmk.dev/docs/behaviors/sticky-layer)
+
+        Activates a layer until another key is pressed.
+      parameters:
+        - *layer
+
+    # Caps Word https://zmk.dev/docs/behaviors/caps-word
+    - label: '&caps_word'
+      documentation: |
+        [Caps word](https://zmk.dev/docs/behaviors/caps-word)
+
+        Acts like caps lock but automatically deactivates when a "break" key is pressed.
+      parameters: []
+
+    # Key Repeat https://zmk.dev/docs/behaviors/key-repeat
+    - label: '&key_repeat'
+      documentation: |
+        [Key repeat](https://zmk.dev/docs/behaviors/key-repeat)
+
+        Sends whatever key code was last sent.
+      parameters: []
+
+    # Reset https://zmk.dev/docs/behaviors/reset
+    - label: '&reset'
+      documentation: |
+        [Reset](https://zmk.dev/docs/behaviors/reset#reset)
+
+        Resets the keyboard and restarts its firmware.
+      parameters: []
+
+    - label: '&bootloader'
+      documentation: |
+        [Bootloader reset](https://zmk.dev/docs/behaviors/reset#bootloader-reset)
+
+        Resets the keyboard and puts it into bootloader mode, allowing you to flash new firmware.
+      parameters: []
+
+    # Bluetooth https://zmk.dev/docs/behaviors/bluetooth
+    - label: '&bt ACTION'
+      documentation: |
+        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+      if:
+        paramsNot: [BT_SEL]
+      parameters:
+        - label: ACTION
+          include: dt-bindings/zmk/bt.h
+          type:
+            - label: BT_CLR
+              documentation: Clear bond information between the keyboard and host for the selected profile.
+            - label: BT_NXT
+              documentation: Switch to the next profile, cycling through to the first one when the end is reached.
+            - label: BT_PRV
+              documentation: Switch to the previous profile, cycling through to the last one when the beginning is reached.
+            - label: BT_SEL
+              documentation: Select the 0-indexed profile by number.
+
+    - label: '&bt BT_SEL PROFILE'
+      documentation: |
+        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+
+        Select the 0-indexed profile by number.
+      if:
+        params: [BT_SEL]
+      parameters:
+        - label: BT_SEL
+          include: dt-bindings/zmk/bt.h
+          type:
+            - label: BT_SEL
+              documentation: Selects the 0-indexed profile by number.
+        - label: PROFILE
+          documentation: 0-based index of the profile to select.
+          type: integer
+
+    # Output Selection https://zmk.dev/docs/behaviors/outputs
+    - label: '&out ACTION'
+      documentation: |
+        [Output selection command](https://zmk.dev/docs/behaviors/outputs)
+      parameters:
+        - label: ACTION
+          include: dt-bindings/zmk/outputs.h
+          type:
+            - label: OUT_USB
+              documentation: Prefer sending to USB.
+            - label: OUT_BLE
+              documentation: Prefer sending to the current bluetooth profile.
+            - label: OUT_TOG
+              documentation: Toggle between USB and BLE.
+
+    # RGB Underglow https://zmk.dev/docs/behaviors/underglow
+    - label: '&rgb_ug ACTION'
+      documentation: |
+        [RGB underglow command](https://zmk.dev/docs/behaviors/lighting#rgb-underglow)
+      parameters:
+        - label: ACTION
+          include: dt-bindings/zmk/rgb.h
+          type:
+            - label: RGB_TOG
+              documentation: Toggles the RGB feature on and off.
+            - label: RGB_HUI
+              documentation: Increases the hue of the RGB feature.
+            - label: RGB_HUD
+              documentation: Decreases the hue of the RGB feature.
+            - label: RGB_SAI
+              documentation: Increases the saturation of the RGB feature.
+            - label: RGB_SAD
+              documentation: Decreases the saturation of the RGB feature. 😢
+            - label: RGB_BRI
+              documentation: Increases the brightness of the RGB feature.
+            - label: RGB_BRD
+              documentation: Decreases the brightness of the RGB feature.
+            - label: RGB_SPI
+              documentation: Increases the speed of the RGB feature effect's animation.
+            - label: RGB_SPD
+              documentation: Decreases the speed of the RGB feature effect's animation.
+            - label: RGB_EFF
+              documentation: Cycles the RGB feature's effect forwards.
+            - label: RGB_EFR
+              documentation: Cycles the RGB feature's effect reverse.
+
+    # Backlight https://zmk.dev/docs/behaviors/backlight
+    - label: '&bl ACTION'
+      documentation: |
+        [Backlight command](https://zmk.dev/docs/behaviors/backlight)
+      if:
+        paramsNot: [BL_SET]
+      parameters:
+        - label: ACTION
+          include: dt-bindings/zmk/backlight.h
+          type:
+            - label: BL_ON
+              documentation: Turn on backlight
+            - label: BL_OFF
+              documentation: Turn off backlight
+            - label: BL_TOG
+              documentation: Toggle backlight on and off
+            - label: BL_INC
+              documentation: Increase brightness
+            - label: BL_DEC
+              documentation: Decrease brightness
+            - label: BL_CYCLE
+              documentation: Cycle brightness
+            - label: BL_SET
+              documentation: Set a specific brightness
+
+    - label: '&bl BL_SET BRIGHTNESS'
+      documentation: |
+        [Backlight command](https://zmk.dev/docs/behaviors/backlight)
+
+        Set backlight brightness
+      if:
+        params: [BL_SET]
+      parameters:
+        - label: BL_SET
+          include: dt-bindings/zmk/backlight.h
+          type:
+            - label: BL_SET
+              documentation: Set a specific brightness
+        - label: BRIGHTNESS
+          documentation: Brightness as a percentage
+          type: integer
+
+    # Power Management https://zmk.dev/docs/behaviors/power
+    - label: '&ext_power ACTION'
+      documentation: |
+        [External power control](https://zmk.dev/docs/behaviors/power#external-power-control)
+      parameters:
+        - label: ACTION
+          include: dt-bindings/zmk/ext_power.h
+          type:
+            - label: EP_OFF
+              documentation: Disable the external power.
+            - label: EP_ON
+              documentation: Enable the external power.
+            - label: EP_TOG
+              documentation: Toggle the external power on/off.
+
+  sensor-bindings:
+    # Encoder
+    - label: '&inc_dec_kp CW_KEY CCW_KEY'
+      documentation: |
+        [Encoder key press](https://zmk.dev/docs/features/encoders)
+
+        Sends keycodes when rotating an encoder.
+      parameters:
+        - label: CW_KEY
+          documentation: Keycode to send when the encoder is rotated clockwise.
+          type: keycode
+        - label: CCW_KEY
+          documentation: Keycode to send when the encoder is rotated counter-clockwise.
+          type: keycode

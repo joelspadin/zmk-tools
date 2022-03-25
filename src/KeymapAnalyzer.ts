@@ -3,9 +3,9 @@ import {
     Behavior,
     behaviorsToCompletions,
     behaviorsToSignatures,
-    BINDINGS_BEHAVIORS,
+    getBehaviors,
     parameterToCompletions,
-    SENSOR_BEHAVIORS,
+    testBehavior,
 } from './behaviors';
 import * as keymap from './keymap';
 import { IncludeInfo } from './keymap';
@@ -184,26 +184,18 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     }
 
     private getCompletionsForProperty(args: CompletionArgs, property: string): CompletionResult {
-        switch (property) {
-            case 'bindings':
-                return this.getCompletionsForBindings(args, BINDINGS_BEHAVIORS);
-
-            case 'sensor-bindings':
-                return this.getCompletionsForBindings(args, SENSOR_BEHAVIORS);
+        const behaviors = getBehaviors(property);
+        if (behaviors) {
+            return this.getCompletionsForBindings(args, behaviors);
         }
-
         return undefined;
     }
 
     private getSignaturesForProperty(args: SignatureArgs, property: string): SignatureResult {
-        switch (property) {
-            case 'bindings':
-                return this.getSignaturesForBindings(args, BINDINGS_BEHAVIORS);
-
-            case 'sensor-bindings':
-                return this.getSignaturesForBindings(args, SENSOR_BEHAVIORS);
+        const behaviors = getBehaviors(property);
+        if (behaviors) {
+            return this.getSignaturesForBindings(args, behaviors);
         }
-
         return undefined;
     }
 
@@ -402,8 +394,8 @@ function filterBehaviors(
             }
         }
 
-        if (b.isMatch) {
-            return b.isMatch(behavior);
+        if (b.if) {
+            return testBehavior(behavior, b.if);
         }
 
         return true;

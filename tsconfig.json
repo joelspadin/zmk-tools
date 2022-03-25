@@ -15,6 +15,6 @@
     "rootDirs": ["src", "typings"],
     "allowJs": true
   },
-  "include": ["src/*", "src/zmk/data/*"],
+  "include": ["src/*", "src/zmk/data/*", "src/global.d.ts"],
   "exclude": ["node_modules", ".vscode-test"]
 }

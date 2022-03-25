@@ -49,11 +49,12 @@ const webExtensionConfig = {
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'ts-loader',
-                    },
-                ],
+                use: [{ loader: 'ts-loader' }],
+            },
+            {
+                test: /\.ya?ml$/,
+                type: 'json',
+                use: [{ loader: 'yaml-loader' }],
             },
         ],
     },
@@ -98,11 +99,12 @@ const extensionConfig = {
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'ts-loader',
-                    },
-                ],
+                use: [{ loader: 'ts-loader' }],
+            },
+            {
+                test: /\.ya?ml$/,
+                type: 'json',
+                use: [{ loader: 'yaml-loader' }],
             },
         ],
     },

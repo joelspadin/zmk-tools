@@ -3,6 +3,7 @@
 ## Unreleased
 
 -   Added support for running as a web extension.
+-   Added code completions for `&caps_word`, `&key_repeat`, and `&bl`.
 
 ## 0.4.0
 

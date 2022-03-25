@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://github.com/joelspadin/zmk-tools/blob/main/src/behaviors.schema.json",
+  "title": "ZMK Tools Behaviors",
+  "type": "object",
+  "properties": {
+    "behaviors": {
+      "description": "Map of DT property names to lists of behavior info",
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/behavior"
+        }
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definition/parameter"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "behavior": {
+      "description": "Information for one behavior binding",
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "Behavior label reference followed by any parameter placeholders, e.g. \"&foo FOO BAR\"",
+          "type": "string",
+          "pattern": "&\\w+(\\s[_A-Z]+)*"
+        },
+        "documentation": { "type": "string" },
+        "parameters": {
+          "description": "Behavior binding parameters",
+          "type": "array",
+          "items": { "$ref": "#/definitions/parameter" }
+        },
+        "if": { "$ref": "#/definitions/behavior_filter" }
+      },
+      "required": ["label", "parameters"]
+    },
+    "parameter": {
+      "description": "Behavior binding parameter",
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "Placeholder text (should match parameter in behavior label)",
+          "type": "string"
+        },
+        "documentation": { "type": "string" },
+        "include": {
+          "description": "Path to a header file that defines the values for the parameter",
+          "type": "string"
+        },
+        "type": { "$ref": "#/definitions/parameter_type" }
+      },
+      "required": ["label"]
+    },
+    "parameter_type": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["keycode", "modifier", "integer"]
+        },
+        {
+          "type": "array",
+          "items": { "$ref": "#/definitions/parameter_value" }
+        }
+      ]
+    },
+    "parameter_value": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "The text value to insert",
+          "type": "string"
+        },
+        "documentation": { "type": "string" }
+      },
+      "required": ["label"]
+    },
+    "behavior_filter": {
+      "description": "Rules for when a behavior should be shown",
+      "type": "object",
+      "properties": {
+        "params": {
+          "description": "Show this behavior only if the parameters match this list",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "paramsNot": {
+          "description": "Show this behavior only if the parameters do not match this list",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
