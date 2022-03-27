@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.0
+
+-   Added the **ZMK: Add Keyboard** command.
+
 ## 0.5.0
 
 -   Added support for running as a web extension.

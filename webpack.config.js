@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+/* eslint-disable @typescript-eslint/naming-convention */
 //@ts-check
 'use strict';
 
@@ -11,6 +12,21 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const ZmkHardwarePlugin = require('./src/webpack-zmk-hardware-plugin');
+
+/** @type {import('webpack').RuleSetRule[]} */
+const rules = [
+    {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [{ loader: 'ts-loader' }],
+    },
+    {
+        test: /\.ya?ml$/,
+        type: 'json',
+        use: [{ loader: 'yaml-loader' }],
+    },
+];
 
 /** @type WebpackConfig */
 const webExtensionConfig = {
@@ -31,7 +47,7 @@ const webExtensionConfig = {
         extensions: ['.ts', '.js'],
         alias: {
             // provides alternate implementation for node module and source files
-            './wasm': path.join(__dirname, './src/web/wasm.ts'),
+            './file': path.join(__dirname, './src/web/file.ts'),
         },
         fallback: {
             // Webpack 5 no longer polyfills Node.js core modules automatically.
@@ -45,23 +61,14 @@ const webExtensionConfig = {
         },
     },
     module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: [{ loader: 'ts-loader' }],
-            },
-            {
-                test: /\.ya?ml$/,
-                type: 'json',
-                use: [{ loader: 'yaml-loader' }],
-            },
-        ],
+        rules,
     },
     plugins: [
         new webpack.ProvidePlugin({
-            process: 'process/browser', // provide a shim for the global `process` variable
+            process: 'process/browser.js', // provide a shim for the global `process` variable
         }),
+        // hardware.yaml only needs to be built once, so this isn't needed in both configs.
+        new ZmkHardwarePlugin('hardware.yaml'),
     ],
     externals: {
         vscode: 'commonjs vscode', // ignored because it doesn't exist
@@ -95,18 +102,7 @@ const extensionConfig = {
         extensions: ['.ts', '.js'],
     },
     module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: [{ loader: 'ts-loader' }],
-            },
-            {
-                test: /\.ya?ml$/,
-                type: 'json',
-                use: [{ loader: 'yaml-loader' }],
-            },
-        ],
+        rules,
     },
     devtool: 'nosources-source-map', // create a source map that points to the original source file
     infrastructureLogging: {

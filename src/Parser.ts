@@ -1,19 +1,17 @@
 import * as vscode from 'vscode';
+import { fetchResource } from './file';
 import Parser = require('web-tree-sitter');
-import { fetchWasm } from './wasm';
 
 const WHITESPACE_RE = /\s/;
 
 async function initTreeSitter(context: vscode.ExtensionContext) {
-    const wasmUri = vscode.Uri.joinPath(context.extensionUri, './node_modules/web-tree-sitter/tree-sitter.wasm');
-    const wasmBinary = await fetchWasm(wasmUri);
+    const wasmBinary = await fetchResource(context, 'node_modules/web-tree-sitter/tree-sitter.wasm');
 
     await Parser.init({ wasmBinary });
 }
 
 async function loadLanguage(context: vscode.ExtensionContext) {
-    const wasmUri = vscode.Uri.joinPath(context.extensionUri, './tree-sitter-devicetree.wasm');
-    const wasmBinary = await fetchWasm(wasmUri);
+    const wasmBinary = await fetchResource(context, 'tree-sitter-devicetree.wasm');
 
     return await Parser.Language.load(wasmBinary);
 }

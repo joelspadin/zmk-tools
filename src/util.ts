@@ -1,3 +1,13 @@
+import * as vscode from 'vscode';
+
+export function decode(input: BufferSource): string {
+    return new TextDecoder().decode(input);
+}
+
+export function encode(input: string): Uint8Array {
+    return new TextEncoder().encode(input);
+}
+
 /**
  * Removes all text after the first instance of whitespace in the given string.
  */
@@ -11,4 +21,14 @@ export function stripIncludeQuotes(text: string): string {
     }
 
     return text;
+}
+
+export function dirname(uri: vscode.Uri): vscode.Uri {
+    const sepIndex = uri.path.lastIndexOf('/');
+    if (sepIndex < 0) {
+        return uri;
+    }
+
+    const dirname = uri.path.slice(0, sepIndex);
+    return uri.with({ path: dirname });
 }

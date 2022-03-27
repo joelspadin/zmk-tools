@@ -21,7 +21,8 @@
   ],
   "activationEvents": [
     "onLanguage:dts",
-    "onLanguage:zmk-keymap"
+    "onLanguage:zmk-keymap",
+    "onCommand:zmk.addKeyboard"
   ],
   "main": "./dist/extension.js",
   "browser": "./dist/web/extension.js",
@@ -50,6 +51,28 @@
         "scopeName": "source.dts",
         "path": "./syntaxes/dts.tmLanguage.json"
       }
+    ],
+    "configuration": {
+      "title": "ZMK Tools",
+      "properties": {
+        "zmk.configPath": {
+          "type": "string",
+          "description": "Workspace-relative path to the folder containing ZMK config files",
+          "scope": "resource"
+        },
+        "zmk.buildMatrixPath": {
+          "type": "string",
+          "description": "Workspace-relative path to the build matrix file",
+          "scope": "resource"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "zmk.addKeyboard",
+        "category": "ZMK",
+        "title": "Add Keyboard"
+      }
     ]
   },
   "scripts": {
@@ -71,6 +94,7 @@
     "@typescript-eslint/parser": "^5.16.0",
     "@vscode/test-web": "^0.0.22",
     "assert": "^2.0.0",
+    "copy-webpack-plugin": "^10.2.4",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "mocha": "^9.2.2",
@@ -85,7 +109,9 @@
     "yaml-loader": "^0.6.0"
   },
   "dependencies": {
+    "cross-fetch": "^3.1.5",
     "markdown-escape": "^1.1.0",
-    "web-tree-sitter": "^0.20.5"
+    "web-tree-sitter": "^0.20.5",
+    "yaml": "^1.10.2"
   }
 }
