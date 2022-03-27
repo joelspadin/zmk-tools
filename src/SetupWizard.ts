@@ -216,7 +216,7 @@ async function copyFile(config: ConfigLocation, dest: vscode.Uri, source: vscode
         const buffer = await fetchFile(config, source);
         await vscode.workspace.fs.writeFile(dest, buffer);
     } catch (e) {
-        vscode.window.showErrorMessage(`Failed to copy ${source}: ${e}`);
+        vscode.window.showWarningMessage(`Failed to copy [${source}](${source}): ${e}`);
         return;
     }
 }

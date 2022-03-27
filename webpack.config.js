@@ -67,8 +67,6 @@ const webExtensionConfig = {
         new webpack.ProvidePlugin({
             process: 'process/browser.js', // provide a shim for the global `process` variable
         }),
-        // hardware.yaml only needs to be built once, so this isn't needed in both configs.
-        new ZmkHardwarePlugin('hardware.yaml'),
     ],
     externals: {
         vscode: 'commonjs vscode', // ignored because it doesn't exist
@@ -104,6 +102,10 @@ const extensionConfig = {
     module: {
         rules,
     },
+    plugins: [
+        // hardware.yaml only needs to be built once, so this isn't needed in both configs.
+        new ZmkHardwarePlugin('hardware.yaml'),
+    ],
     devtool: 'nosources-source-map', // create a source map that points to the original source file
     infrastructureLogging: {
         level: 'log', // enables logging required for problem matchers

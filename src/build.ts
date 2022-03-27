@@ -24,11 +24,17 @@ export async function addToBuildMatrix(
 ): Promise<void> {
     const matrix = await readMatrix(context, config);
 
-    const include = parseInclude(matrix);
+    const currentItems = parseInclude(matrix);
+
+    if (!matrix.has('include')) {
+        matrix.set('include', new YAMLSeq());
+    }
+
+    const include = matrix.get('include') as YAMLSeq;
 
     for (const build of builds) {
-        if (!include.some((x) => buildItemEquals(x, build))) {
-            matrix.addIn(['include'], build);
+        if (!currentItems.some((x) => buildItemEquals(x, build))) {
+            include.add(build);
         }
     }
 
@@ -37,7 +43,7 @@ export async function addToBuildMatrix(
 
 function getMatrixUri(config: ConfigLocation) {
     const settings = vscode.workspace.getConfiguration('zmk', config.workspace);
-    const path = settings.get<string>('buildMatrixPath', 'build.yaml');
+    const path = settings.get<string>('buildMatrixPath') || 'build.yaml';
 
     return vscode.Uri.joinPath(config.workspace.uri, path);
 }
