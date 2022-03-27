@@ -26,6 +26,10 @@ export async function addToBuildMatrix(
 
     const currentItems = parseInclude(matrix);
 
+    if (!matrix.contents) {
+        matrix.contents = new YAMLMap();
+    }
+
     if (!matrix.has('include')) {
         matrix.set('include', new YAMLSeq());
     }

@@ -60,6 +60,7 @@ export class SetupWizard implements vscode.Disposable {
             const builds = getBuildItems(parts);
             await addToBuildMatrix(this.context, config, builds);
         } catch (e) {
+            console.error(e);
             vscode.window.showErrorMessage(`Failed to update build matrix: ${e}`);
         }
     }
