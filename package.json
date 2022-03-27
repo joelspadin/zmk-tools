@@ -2,7 +2,7 @@
   "name": "zmk-tools",
   "displayName": "ZMK Tools",
   "description": "Tools for working with ZMK Firmware",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "publisher": "spadin",
   "license": "MIT",
   "author": {
