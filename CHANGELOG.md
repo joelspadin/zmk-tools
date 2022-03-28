@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.3
+
+-   Updated ZMK keyboards.
+
+## 1.0.2
+
+-   Various bug fixes.
+
 ## 1.0.0
 
 -   Added the **ZMK: Add Keyboard** command.
