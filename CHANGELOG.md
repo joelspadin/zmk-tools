@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.0
+
+-   **ZMK: Add Keyboard** now grabs the latest version of the hardware list from
+    [zmk.dev/hardware-metadata.json](https://zmk.dev/hardware-metadata.json)
+    so the extension no longer needs to be updated to support new keyboards.
+
 ## 1.0.3
 
 -   Updated ZMK keyboards.

@@ -104,7 +104,7 @@ const extensionConfig = {
     },
     plugins: [
         // hardware.yaml only needs to be built once, so this isn't needed in both configs.
-        new ZmkHardwarePlugin('hardware.yaml'),
+        new ZmkHardwarePlugin('hardware.json'),
     ],
     devtool: 'nosources-source-map', // create a source map that points to the original source file
     infrastructureLogging: {

@@ -3,7 +3,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const yaml = require('yaml');
 
-const BASE_URL = 'https://raw.githubusercontent.com/zmkfirmware/zmk/main';
 const ZMK_ROOT = 'zmk';
 
 /**
@@ -23,14 +22,13 @@ class ZmkHardwarePlugin extends CopyPlugin {
                         const hardware = assets.reduce((result, asset) => {
                             const item = yaml.parse(asset.data.toString());
 
-                            const relPath = path.posix.relative(ZMK_ROOT, path.posix.dirname(asset.sourceFilename));
-                            item.baseUri = `${BASE_URL}/${relPath}`;
+                            item.directory = path.posix.relative(ZMK_ROOT, path.posix.dirname(asset.sourceFilename));
 
                             result.push(item);
                             return result;
                         }, []);
 
-                        return yaml.stringify(hardware);
+                        return JSON.stringify(hardware);
                     },
                 },
             ],

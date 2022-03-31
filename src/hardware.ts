@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import fetch from 'cross-fetch';
 import * as vscode from 'vscode';
 import * as yaml from 'yaml';
 import { ConfigLocation } from './config';
 import { fetchResource } from './file';
 import { decode, dirname } from './util';
+
+const BASE_URL = 'https://raw.githubusercontent.com/zmkfirmware/zmk/main';
+const METADATA_URL = 'https://zmk.dev/hardware-metadata.json';
 
 export type Feature = 'keys' | 'display' | 'encoder' | 'underglow' | 'backlight' | 'pointer';
 export type Output = 'usb' | 'ble';
@@ -21,7 +25,8 @@ export interface Board {
     file_format?: string;
     id: string;
     name: string;
-    baseUri: string;
+    directory: string;
+    baseUri?: string;
     url?: string;
     arch?: string;
     outputs?: Output[];
@@ -39,7 +44,8 @@ export interface Shield {
     file_format?: string;
     id: string;
     name: string;
-    baseUri: string;
+    directory: string;
+    baseUri?: string;
     url?: string;
     description?: string;
     manufacturer?: string;
@@ -56,7 +62,8 @@ export interface Interconnect {
     file_format?: string;
     id: string;
     name: string;
-    baseUri: string;
+    directory: string;
+    baseUri?: string;
     url?: string;
     description?: string;
     manufacturer?: string;
@@ -132,13 +139,28 @@ function isController(hardware: Hardware): hardware is Board {
     return hardware.type === 'board' && !isKeyboard(hardware);
 }
 
+async function getZmkHardwareMetadata(context: vscode.ExtensionContext): Promise<string> {
+    const response = await fetch(METADATA_URL, { credentials: 'same-origin' });
+    if (response.ok) {
+        return await response.text();
+    }
+
+    vscode.window.showInformationMessage(
+        `Failed to fetch ${METADATA_URL} (${await response.text()}). Falling back to built-in keyboard list.`
+    );
+
+    return decode(await fetchResource(context, 'dist/hardware.json'));
+}
+
 async function getZmkHardware(context: vscode.ExtensionContext): Promise<Hardware[]> {
-    const file = decode(await fetchResource(context, 'dist/hardware.yaml'));
-    return yaml.parse(file) as Hardware[];
+    const file = await getZmkHardwareMetadata(context);
+    return (JSON.parse(file) as Hardware[]).map((hardware) => ({
+        ...hardware,
+        baseUri: `${BASE_URL}/${hardware.directory}`,
+    }));
 }
 
 async function getUserHardware(config: ConfigLocation): Promise<Hardware[]> {
-    // TODO: set a file watcher on .zmk.yml files, cache result, and invalidate if files change
     const meta = await vscode.workspace.findFiles(new vscode.RelativePattern(config.config, '**/*.zmk.yml'));
 
     return Promise.all(
