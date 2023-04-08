@@ -36,7 +36,7 @@ type SignatureResult = vscode.ProviderResult<vscode.SignatureHelp>;
 export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.SignatureHelpProvider, vscode.Disposable {
     private disposable: vscode.Disposable;
     private diagnosticCollection: vscode.DiagnosticCollection;
-    private errorQuery: Parser.Query;
+    // private errorQuery: Parser.Query;
     private includeQuery: Parser.Query;
     private updateTimeout?: ReturnType<typeof setTimeout>;
     private staleDocuments: Set<vscode.TextDocument> = new Set();
@@ -44,7 +44,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     public constructor(private parser: KeymapParser) {
         this.diagnosticCollection = vscode.languages.createDiagnosticCollection('zmk-keymap');
 
-        this.errorQuery = this.parser.query('(ERROR) @error');
+        // this.errorQuery = this.parser.query('(ERROR) @error');
         this.includeQuery = this.parser.query('(preproc_include path: (_) @include)');
 
         this.disposable = vscode.Disposable.from(
@@ -123,25 +123,21 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     }
 
     private updateDiagnostics(document: vscode.TextDocument) {
-        const tree = this.parser.parse(document);
-
-        this.diagnosticCollection.delete(document.uri);
-
-        if (tree.rootNode.hasError()) {
-            const diagnostics: vscode.Diagnostic[] = [];
-
-            const errors = this.errorQuery.matches(tree.rootNode);
-            for (const capture of getCaptures(errors)) {
-                // TODO: provide a more meaningful error message
-                // see https://github.com/tree-sitter/tree-sitter/issues/255
-                const range = getNodeRange(capture.node);
-                diagnostics.push(new vscode.Diagnostic(range, 'Syntax error', vscode.DiagnosticSeverity.Error));
-            }
-
-            // TODO: search for missing nodes too.
-
-            this.diagnosticCollection.set(document.uri, diagnostics);
-        }
+        // TODO: Disabled until tree-sitter provides better error diagnostics.
+        // const tree = this.parser.parse(document);
+        // this.diagnosticCollection.delete(document.uri);
+        // if (tree.rootNode.hasError()) {
+        //     const diagnostics: vscode.Diagnostic[] = [];
+        //     const errors = this.errorQuery.matches(tree.rootNode);
+        //     for (const capture of getCaptures(errors)) {
+        //         // TODO: provide a more meaningful error message
+        //         // see https://github.com/tree-sitter/tree-sitter/issues/255
+        //         const range = getNodeRange(capture.node);
+        //         diagnostics.push(new vscode.Diagnostic(range, 'Syntax error', vscode.DiagnosticSeverity.Error));
+        //     }
+        //     // TODO: search for missing nodes too.
+        //     this.diagnosticCollection.set(document.uri, diagnostics);
+        // }
     }
 
     private getIncludeInfo(document: vscode.TextDocument): IncludeInfo {
