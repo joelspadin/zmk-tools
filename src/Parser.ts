@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { fetchResource } from './file';
+import { stripQuotes } from './util';
 import Parser = require('web-tree-sitter');
 
 const WHITESPACE_RE = /\s/;
@@ -220,4 +221,16 @@ export function getNodeRange(node: Parser.SyntaxNode): vscode.Range {
 export function getPropertyName(node: Parser.SyntaxNode): string | undefined {
     const prop = getAncesorOfType(node, 'property');
     return prop?.childForFieldName('name')?.text;
+}
+
+/**
+ * Gets the "compatible" property of the DeviceTree node which includes the given node,
+ * or `undefined` if it is not part of a node with such a property.
+ */
+export function getCompatible(node: Parser.SyntaxNode): string | undefined {
+    const dtNode = getAncesorOfType(node, 'node');
+    const properties = dtNode?.descendantsOfType('property');
+    const compatible = properties?.find((x) => x.childForFieldName('name')?.text === 'compatible');
+    const value = compatible?.childForFieldName('value');
+    return value ? stripQuotes(value.text) : undefined;
 }

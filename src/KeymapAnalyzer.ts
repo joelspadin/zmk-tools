@@ -5,6 +5,7 @@ import {
     asPosition,
     findPreviousToken,
     getAncesorOfType,
+    getCompatible,
     getNodeRange,
     getPropertyName,
     isDescendantOf,
@@ -168,7 +169,8 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     private getCompletions(args: CompletionArgs): CompletionResult {
         const property = getPropertyName(args.node);
         if (property) {
-            return this.getCompletionsForProperty(args, property);
+            const compatible = getCompatible(args.node);
+            return this.getCompletionsForProperty(args, property, compatible);
         }
 
         return undefined;
@@ -177,22 +179,23 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     private getSignatureHelp(args: SignatureArgs): SignatureResult {
         const property = getPropertyName(args.node);
         if (property) {
-            return this.getSignaturesForProperty(args, property);
+            const compatible = getCompatible(args.node);
+            return this.getSignaturesForProperty(args, property, compatible);
         }
 
         return undefined;
     }
 
-    private getCompletionsForProperty(args: CompletionArgs, property: string): CompletionResult {
-        const behaviors = getBehaviors(property);
+    private getCompletionsForProperty(args: CompletionArgs, property: string, compatible?: string): CompletionResult {
+        const behaviors = getBehaviors(property, compatible);
         if (behaviors) {
             return this.getCompletionsForBindings(args, behaviors);
         }
         return undefined;
     }
 
-    private getSignaturesForProperty(args: SignatureArgs, property: string): SignatureResult {
-        const behaviors = getBehaviors(property);
+    private getSignaturesForProperty(args: SignatureArgs, property: string, compatible?: string): SignatureResult {
+        const behaviors = getBehaviors(property, compatible);
         if (behaviors) {
             return this.getSignaturesForBindings(args, behaviors);
         }

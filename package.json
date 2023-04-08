@@ -14,16 +14,12 @@
   },
   "icon": "images/zmk_logo.png",
   "engines": {
-    "vscode": "^1.65.0"
+    "vscode": "^1.77.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onLanguage:dts",
-    "onLanguage:zmk-keymap",
-    "onCommand:zmk.addKeyboard"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "browser": "./dist/web/extension.js",
   "contributes": {
@@ -101,7 +97,7 @@
     "prettier": "^2.8.7",
     "process": "^0.11.10",
     "tree-sitter-cli": "^0.20.7",
-    "tree-sitter-devicetree": "^0.5.0",
+    "tree-sitter-devicetree": "^0.6.0",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.78.0",

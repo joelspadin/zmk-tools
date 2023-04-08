@@ -5,6 +5,14 @@
   "type": "object",
   "properties": {
     "behaviors": {
+      "$ref": "#/definitions/behaviorProperties"
+    },
+    "macroBehaviors": {
+      "$ref": "#/definitions/behaviorProperties"
+    }
+  },
+  "definitions": {
+    "behaviorProperties": {
       "description": "Map of DT property names to lists of behavior info",
       "type": "object",
       "additionalProperties": {
@@ -19,9 +27,7 @@
           "$ref": "#/definition/parameter"
         }
       }
-    }
-  },
-  "definitions": {
+    },
     "behavior": {
       "description": "Information for one behavior binding",
       "type": "object",

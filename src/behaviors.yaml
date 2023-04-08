@@ -22,6 +22,15 @@ behaviors:
       parameters:
         - *keycode
 
+    # Key Toggle https://zmk.dev/docs/behaviors/key-toggle
+    - label: '&kt KEYCODE'
+      documentation: |
+        [Key toggle](https://zmk.dev/docs/behaviors/key-toggle)
+
+        Toggles whether a key is pressed.
+      parameters:
+        - *keycode
+
     # Layers https://zmk.dev/docs/behaviors/layers
     - label: '&mo LAYER'
       documentation: |
@@ -135,7 +144,7 @@ behaviors:
       parameters: []
 
     # Reset https://zmk.dev/docs/behaviors/reset
-    - label: '&reset'
+    - label: '&sys_reset'
       documentation: |
         [Reset](https://zmk.dev/docs/behaviors/reset#reset)
 
@@ -302,3 +311,54 @@ behaviors:
         - label: CCW_KEY
           documentation: Keycode to send when the encoder is rotated counter-clockwise.
           type: keycode
+
+macroBehaviors:
+  # https://zmk.dev/docs/behaviors/macros
+  bindings:
+    - label: '&macro_tap'
+      documentation: |
+        [Tap mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+
+        Switch the macro to key tap mode
+      parameters: []
+
+    - label: '&macro_press'
+      documentation: |
+        [Press mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+
+        Switch the macro to key press mode
+      parameters: []
+
+    - label: '&macro_release'
+      documentation: |
+        [Release mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+
+        Switch the macro to key release mode
+      parameters: []
+
+    - label: '&macro_tap_time TAP_MS'
+      documentation: |
+        [Tap time](https://zmk.dev/docs/behaviors/macros#tap-time)
+
+        Change the duration of taps when in tap mode
+      parameters:
+        - label: TAP_MS
+          documentation: Tap duration in milliseconds
+          type: integer
+
+    - label: '&macro_wait_time WAIT_MS'
+      documentation: |
+        [Wait time](https://zmk.dev/docs/behaviors/macros#wait-time)
+
+        Change the time to wait between bindings
+      parameters:
+        - label: WAIT_MS
+          documentation: Delay in milliseconds
+          type: integer
+
+    - label: '&macro_pause_for_release'
+      documentation: |
+        [Pause for release](https://zmk.dev/docs/behaviors/macros#processing-continuation-on-release)
+
+        Pause the macro until the key that triggered the macro is released
+      parameters: []

@@ -3,7 +3,7 @@ import behaviorsFile = require('./behaviors.yaml');
 import Parser = require('web-tree-sitter');
 
 import { getKeycodeCompletions, getModifierCompletions } from './keycodes';
-import { addMissingSystemInclude, IncludeInfo } from './keymap';
+import { IncludeInfo, addMissingSystemInclude } from './keymap';
 import { truncateAtWhitespace } from './util';
 
 const BEHAVIORS_INCLUDE = 'behaviors.dtsi';
@@ -35,9 +35,11 @@ export interface Behavior {
 
 interface BehaviorsDocument {
     behaviors: Record<string, Behavior[]>;
+    macroBehaviors: Record<string, Behavior[]>;
 }
 
 const BEHAVIORS = (behaviorsFile as BehaviorsDocument).behaviors;
+const MACRO_BEHAVIORS = (behaviorsFile as BehaviorsDocument).macroBehaviors;
 
 function isParamMatch(behavior: Parser.SyntaxNode, params: readonly string[]) {
     let node = behavior.nextNamedSibling;
@@ -52,7 +54,12 @@ function isParamMatch(behavior: Parser.SyntaxNode, params: readonly string[]) {
     return true;
 }
 
-export function getBehaviors(property: string): readonly Behavior[] | undefined {
+export function getBehaviors(property: string, compatible?: string): readonly Behavior[] | undefined {
+    if (compatible === 'zmk,behavior-macro') {
+        const result = (BEHAVIORS[property] ?? []).concat(MACRO_BEHAVIORS[property] ?? []);
+        return result.length > 0 ? result : undefined;
+    }
+
     return BEHAVIORS[property];
 }
 
