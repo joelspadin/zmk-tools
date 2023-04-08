@@ -1,5 +1,17 @@
 import * as vscode from 'vscode';
 import {
+    KeymapParser,
+    ParseChangedEvent,
+    asPosition,
+    findPreviousToken,
+    getAncesorOfType,
+    getNodeRange,
+    getPropertyName,
+    isDescendantOf,
+    nodeAtPosition,
+    nodesEqual,
+} from './Parser';
+import {
     Behavior,
     behaviorsToCompletions,
     behaviorsToSignatures,
@@ -9,20 +21,8 @@ import {
 } from './behaviors';
 import * as keymap from './keymap';
 import { IncludeInfo } from './keymap';
-import {
-    asPosition,
-    findPreviousToken,
-    getAncesorOfType,
-    getNodeRange,
-    getPropertyName,
-    isDescendantOf,
-    KeymapParser,
-    nodeAtPosition,
-    nodesEqual,
-    ParseChangedEvent,
-} from './Parser';
 import { stripIncludeQuotes, truncateAtWhitespace } from './util';
-import Parser = require('web-tree-sitter');
+import type Parser = require('web-tree-sitter');
 
 const DIAGNOSTICS_UPDATE_DELAY = 500;
 

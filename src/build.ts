@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as yaml from 'yaml';
-import { YAMLMap, YAMLSeq } from 'yaml/types';
+import { YAMLMap, YAMLSeq } from 'yaml';
 import { ConfigLocation } from './config';
 import { fetchResource } from './file';
 import { decode } from './util';

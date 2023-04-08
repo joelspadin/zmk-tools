@@ -24,7 +24,7 @@ const rules = [
     {
         test: /\.ya?ml$/,
         type: 'json',
-        use: [{ loader: 'yaml-loader' }],
+        use: [{ loader: 'yaml-loader', options: { asJSON: true } }],
     },
 ];
 
@@ -45,10 +45,6 @@ const webExtensionConfig = {
     resolve: {
         mainFields: ['browser', 'module', 'main'], // look for `browser` entry point in imported node modules
         extensions: ['.ts', '.js'],
-        alias: {
-            // provides alternate implementation for node module and source files
-            './file': path.join(__dirname, './src/web/file.ts'),
-        },
         fallback: {
             // Webpack 5 no longer polyfills Node.js core modules automatically.
             // see https://webpack.js.org/configuration/resolve/#resolvefallback

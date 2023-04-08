@@ -5,9 +5,12 @@ import Parser = require('web-tree-sitter');
 const WHITESPACE_RE = /\s/;
 
 async function initTreeSitter(context: vscode.ExtensionContext) {
-    const wasmBinary = await fetchResource(context, 'node_modules/web-tree-sitter/tree-sitter.wasm');
-
-    await Parser.init({ wasmBinary });
+    await Parser.init({
+        locateFile() {
+            const uri = vscode.Uri.joinPath(context.extensionUri, 'node_modules/web-tree-sitter/tree-sitter.wasm');
+            return vscode.env.uiKind === vscode.UIKind.Desktop ? uri.fsPath : uri.toString(true);
+        },
+    });
 }
 
 async function loadLanguage(context: vscode.ExtensionContext) {
