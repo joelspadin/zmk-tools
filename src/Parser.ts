@@ -8,7 +8,7 @@ const WHITESPACE_RE = /\s/;
 async function initTreeSitter(context: vscode.ExtensionContext) {
     await Parser.init({
         locateFile() {
-            const uri = vscode.Uri.joinPath(context.extensionUri, 'node_modules/web-tree-sitter/tree-sitter.wasm');
+            const uri = vscode.Uri.joinPath(context.extensionUri, 'dist/tree-sitter.wasm');
             return vscode.env.uiKind === vscode.UIKind.Desktop ? uri.fsPath : uri.toString(true);
         },
     });

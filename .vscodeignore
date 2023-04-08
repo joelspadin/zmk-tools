@@ -3,6 +3,7 @@
 .vscode-test-web/**
 dist/test/**
 dist/web/test/**
+node_modules/**
 src/**
 zmk/**
 .gitignore

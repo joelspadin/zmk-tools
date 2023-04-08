@@ -12,6 +12,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ZmkHardwarePlugin = require('./src/webpack-zmk-hardware-plugin');
 
 /** @type {import('webpack').RuleSetRule[]} */
@@ -101,6 +102,9 @@ const extensionConfig = {
     plugins: [
         // hardware.yaml only needs to be built once, so this isn't needed in both configs.
         new ZmkHardwarePlugin('hardware.json'),
+        new CopyWebpackPlugin({
+            patterns: ['node_modules/web-tree-sitter/tree-sitter.wasm'],
+        }),
     ],
     devtool: 'nosources-source-map', // create a source map that points to the original source file
     infrastructureLogging: {
