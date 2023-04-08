@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0
+
+-   Disabled syntax error checking, since it gave too many false positives and the parser can't yet provide useful messages for real errors.
+-   Updated ZMK behaviors.
+-   Added support for macro-specific behaviors in macro bindings.
+
 ## 1.1.0
 
 -   **ZMK: Add Keyboard** now grabs the latest version of the hardware list from
