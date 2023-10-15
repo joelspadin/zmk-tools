@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0
+
+-   Updated ZMK key codes.
+-   Changed how the keymap parser is loaded to hopefully fix the web extension.
+-   Changed `*.keymap` files to identify as `dts` instead of `zmk-keymap` for better compatibility with extensions such as [nRF DeviceTree](https://marketplace.visualstudio.com/items?itemName=nordic-semiconductor.nrf-devicetree).
+
 ## 1.2.0
 
 -   Disabled syntax error checking, since it gave too many false positives and the parser can't yet provide useful messages for real errors.
