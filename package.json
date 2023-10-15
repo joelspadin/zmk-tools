@@ -25,25 +25,20 @@
   "contributes": {
     "languages": [
       {
-        "id": "zmk-keymap",
+        "id": "dts",
         "aliases": [
-          "ZMK Keymap"
+          "Devicetree"
         ],
         "extensions": [
-          ".keymap"
+          ".keymap",
+          ".overlay"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
-        "id": "dts",
-        "extensions": [
-          ".overlay"
-        ]
       }
     ],
     "grammars": [
       {
-        "language": "zmk-keymap",
+        "language": "dts",
         "scopeName": "source.dts",
         "path": "./syntaxes/dts.tmLanguage.json"
       }

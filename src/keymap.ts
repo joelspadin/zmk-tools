@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 
-export const SELECTOR: vscode.DocumentSelector = 'zmk-keymap';
+export const SELECTOR: vscode.DocumentSelector = {
+    pattern: '**/*.keymap',
+};
 
 export function isKeymap(document: vscode.TextDocument) {
     return document.uri.path.endsWith('.keymap');
