@@ -49,7 +49,7 @@ async function locateConfigInWorkspace(workspace: vscode.WorkspaceFolder): Promi
         return { workspace, config };
     }
 
-    const glob = await vscode.workspace.findFiles(new vscode.RelativePattern(workspace.uri, '**/west.yml'));
+    const glob = await vscode.workspace.findFiles(new vscode.RelativePattern(workspace, '**/west.yml'));
 
     if (glob.length === 0) {
         return undefined;

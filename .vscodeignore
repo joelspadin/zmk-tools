@@ -8,6 +8,7 @@ src/**
 zmk/**
 .gitignore
 .gitmodules
+tree-sitter-devicetree.wasm
 webpack.config.js
 **/tsconfig.json
 **/.editorconfig

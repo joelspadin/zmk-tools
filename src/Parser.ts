@@ -7,15 +7,15 @@ const WHITESPACE_RE = /\s/;
 
 async function initTreeSitter(context: vscode.ExtensionContext) {
     await Parser.init({
-        locateFile() {
-            const uri = vscode.Uri.joinPath(context.extensionUri, 'dist/tree-sitter.wasm');
-            return vscode.env.uiKind === vscode.UIKind.Desktop ? uri.fsPath : uri.toString(true);
+        locateFile(path: string, prefix: string) {
+            const uri = vscode.Uri.joinPath(context.extensionUri, 'dist', path);
+            return uri.toString(true);
         },
     });
 }
 
 async function loadLanguage(context: vscode.ExtensionContext) {
-    const wasmBinary = await fetchResource(context, 'tree-sitter-devicetree.wasm');
+    const wasmBinary = await fetchResource(context, 'dist/tree-sitter-devicetree.wasm');
 
     return await Parser.Language.load(wasmBinary);
 }
@@ -49,10 +49,13 @@ export class KeymapParser implements vscode.Disposable {
     private disposable: vscode.Disposable;
     private trees: Record<string, Parser.Tree> = {};
 
-    private constructor(private parser: Parser, private language: Parser.Language) {
+    private constructor(
+        private parser: Parser,
+        private language: Parser.Language,
+    ) {
         this.disposable = vscode.Disposable.from(
             vscode.workspace.onDidCloseTextDocument((document) => this.deleteTree(document)),
-            vscode.workspace.onDidChangeTextDocument((e) => this.updateTree(e))
+            vscode.workspace.onDidChangeTextDocument((e) => this.updateTree(e)),
         );
     }
 
@@ -173,7 +176,7 @@ export function isDescendantOf(node: Parser.SyntaxNode, other: Parser.SyntaxNode
  */
 export function findPreviousToken(
     document: vscode.TextDocument,
-    position: vscode.Position
+    position: vscode.Position,
 ): vscode.Position | undefined {
     const line = document.lineAt(position.line);
 

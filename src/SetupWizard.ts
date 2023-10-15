@@ -53,7 +53,7 @@ export class SetupWizard implements vscode.Disposable {
             },
             async () => {
                 await copyConfigFiles(config, parts.keyboard);
-            }
+            },
         );
 
         try {
@@ -130,6 +130,7 @@ async function getConfig() {
         if (e instanceof ConfigMissingError) {
             showConfigMissingError();
         }
+        console.error(e);
     }
     return undefined;
 }
@@ -137,7 +138,7 @@ async function getConfig() {
 async function showConfigMissingError() {
     const response = await vscode.window.showErrorMessage(
         'Could not find a ZMK config repo in the workspace. Go to the template repo and click "Use this template" to create a new repo.',
-        OPEN_REPO_ACTION
+        OPEN_REPO_ACTION,
     );
     if (response === OPEN_REPO_ACTION) {
         vscode.env.openExternal(vscode.Uri.parse(TEMPLATE_URL));
