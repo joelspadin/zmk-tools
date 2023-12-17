@@ -4,7 +4,8 @@ import Parser = require('web-tree-sitter');
 
 import { getKeycodeCompletions, getModifierCompletions } from './keycodes';
 import { IncludeInfo, addMissingSystemInclude } from './keymap';
-import { truncateAtWhitespace } from './util';
+import { getMouseButtonCompletions } from './mouse';
+import { camelCaseToWords, truncateAtWhitespace } from './util';
 
 const BEHAVIORS_INCLUDE = 'behaviors.dtsi';
 const PREFERRED_BEHAVIOR = '&kp';
@@ -14,7 +15,7 @@ export interface ParameterValue {
     documentation?: string;
 }
 
-export type ParameterType = 'keycode' | 'modifier' | 'integer' | ParameterValue[];
+export type ParameterType = 'keycode' | 'modifier' | 'mouseButton' | 'integer' | ParameterValue[];
 
 export type Parameter = vscode.ParameterInformation & {
     type?: ParameterType;
@@ -63,7 +64,11 @@ export function getBehaviors(property: string, compatible?: string): readonly Be
     return BEHAVIORS[property];
 }
 
-export function testBehavior(behavior: Parser.SyntaxNode, filter: BehaviorFilter) {
+export function testBehavior(behavior: Parser.SyntaxNode, filter: BehaviorFilter | BehaviorFilter[]): boolean {
+    if (Array.isArray(filter)) {
+        return filter.every((f) => testBehavior(behavior, f));
+    }
+
     if (filter.params && !isParamMatch(behavior, filter.params)) {
         return false;
     }
@@ -83,7 +88,7 @@ export function testBehavior(behavior: Parser.SyntaxNode, filter: BehaviorFilter
  */
 export function behaviorsToSignatures(
     behaviors: readonly Behavior[],
-    activeParameter?: number
+    activeParameter?: number,
 ): vscode.SignatureInformation[] {
     let filtered: readonly Behavior[] = behaviors;
 
@@ -107,7 +112,7 @@ export function behaviorsToSignatures(
 export function behaviorsToCompletions(
     behaviors: readonly Behavior[],
     includeInfo: IncludeInfo,
-    range?: vscode.Range
+    range?: vscode.Range,
 ): vscode.CompletionItem[] {
     const additionalTextEdits = addMissingSystemInclude(includeInfo, BEHAVIORS_INCLUDE);
 
@@ -154,6 +159,9 @@ export function parameterToCompletions(parameter: Parameter, includeInfo: Includ
 
         case 'modifier':
             return getModifierCompletions(includeInfo);
+
+        case 'mouseButton':
+            return getMouseButtonCompletions(includeInfo);
     }
 
     return [];
@@ -165,7 +173,9 @@ export function parameterToCompletions(parameter: Parameter, includeInfo: Includ
 function getParameterInformation(parameter: Parameter): vscode.ParameterInformation {
     let documentation = parameter.documentation;
     if (typeof documentation === 'string' && parameter.type) {
-        documentation = new vscode.MarkdownString(`\`${parameter.type}\`: ${documentation}`);
+        const typeName = camelCaseToWords(parameter.type as string);
+
+        documentation = new vscode.MarkdownString(`\`${typeName}\`: ${documentation}`);
     }
 
     return { label: parameter.label, documentation };

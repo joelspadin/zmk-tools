@@ -11,6 +11,11 @@ parameters:
     label: LAYER
     type: integer
 
+  mouseButton: &mouseButton
+    documentation: Mouse button
+    label: BUTTON
+    type: mouseButton
+
 behaviors:
   bindings:
     # Key Press https://zmk.dev/docs/behaviors/key-press
@@ -163,7 +168,8 @@ behaviors:
       documentation: |
         [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
       if:
-        paramsNot: [BT_SEL]
+        - paramsNot: [BT_SEL]
+        - paramsNot: [BT_DISC]
       parameters:
         - label: ACTION
           include: dt-bindings/zmk/bt.h
@@ -176,6 +182,8 @@ behaviors:
               documentation: Switch to the previous profile, cycling through to the last one when the beginning is reached.
             - label: BT_SEL
               documentation: Select the 0-indexed profile by number.
+            - label: BT_DISC
+              documentation: Disconnect from the 0-indexed profile by number, if it's currently connected and inactive.
 
     - label: '&bt BT_SEL PROFILE'
       documentation: |
@@ -192,6 +200,23 @@ behaviors:
               documentation: Selects the 0-indexed profile by number.
         - label: PROFILE
           documentation: 0-based index of the profile to select.
+          type: integer
+
+    - label: '&bt BT_DISC PROFILE'
+      documentation: |
+        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+
+        Disconnect from the 0-indexed profile by number, if it's currently connected and inactive.
+      if:
+        params: [BT_DISC]
+      parameters:
+        - label: BT_DISC
+          include: dt-bindings/zmk/bt.h
+          type:
+            - label: BT_DISC
+              documentation: Disconnect from the 0-indexed profile by number, if it's currently connected and inactive.
+        - label: PROFILE
+          documentation: 0-based index of the profile from which to disconnect.
           type: integer
 
     # Output Selection https://zmk.dev/docs/behaviors/outputs
@@ -296,6 +321,15 @@ behaviors:
               documentation: Enable the external power.
             - label: EP_TOG
               documentation: Toggle the external power on/off.
+
+    # Mouse Button Press https://zmk.dev/docs/behaviors/mouse-emulation
+    - label: '&mkp BUTTON'
+      documentation: |
+        [Mouse button press](https://zmk.dev/docs/behaviors/mouse-emulation#mouse-button-press)
+
+        Sends a mouse button press.
+      parameters:
+        - *mouseButton
 
   sensor-bindings:
     # Encoder

@@ -40,3 +40,7 @@ export function dirname(uri: vscode.Uri): vscode.Uri {
     const dirname = uri.path.slice(0, sepIndex);
     return uri.with({ path: dirname });
 }
+
+export function camelCaseToWords(str: string) {
+    return str.replace(/([a-z])([A-Z])/, (_, end: string, start: string) => end + ' ' + start.toLowerCase());
+}

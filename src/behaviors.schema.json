@@ -43,7 +43,15 @@
           "type": "array",
           "items": { "$ref": "#/definitions/parameter" }
         },
-        "if": { "$ref": "#/definitions/behavior_filter" }
+        "if": {
+          "anyOf": [
+            { "$ref": "#/definitions/behavior_filter" },
+            {
+              "type": "array",
+              "items": { "$ref": "#/definitions/behavior_filter" }
+            }
+          ]
+        }
       },
       "required": ["label", "parameters"]
     },
@@ -68,7 +76,7 @@
       "oneOf": [
         {
           "type": "string",
-          "enum": ["keycode", "modifier", "integer"]
+          "enum": ["keycode", "modifier", "integer", "mouseButton"]
         },
         {
           "type": "array",
