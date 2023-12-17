@@ -100,7 +100,6 @@
     "yaml-loader": "^0.8.0"
   },
   "dependencies": {
-    "cross-fetch": "^4.0.0",
     "markdown-escape": "^2.0.0",
     "web-tree-sitter": "^0.20.8",
     "yaml": "^2.3.4"
