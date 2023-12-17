@@ -1,11 +1,22 @@
 import * as vscode from 'vscode';
-import { dirname } from './util';
+import * as yaml from 'yaml';
+import { decode, dirname } from './util';
 
 export class ConfigMissingError extends Error {}
 
 export interface ConfigLocation {
     workspace: vscode.WorkspaceFolder;
     config: vscode.Uri;
+    boardRoot: vscode.Uri;
+}
+
+interface ZephyrModuleFile {
+    build?: {
+        settings?: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            board_root?: string;
+        };
+    };
 }
 
 /**
@@ -40,13 +51,37 @@ async function findAllConfigs(): Promise<ConfigLocation[]> {
     return configs.filter((x) => x !== undefined) as ConfigLocation[];
 }
 
+async function locateBoardRoot(workspace: vscode.WorkspaceFolder): Promise<vscode.Uri | undefined> {
+    try {
+        const uri = vscode.Uri.joinPath(workspace.uri, 'zephyr/module.yml');
+        const file = decode(await vscode.workspace.fs.readFile(uri));
+
+        const module = yaml.parse(file) as ZephyrModuleFile;
+        const boardRoot = module?.build?.settings?.board_root;
+
+        if (boardRoot) {
+            return vscode.Uri.joinPath(workspace.uri, boardRoot);
+        }
+    } catch (e) {
+        if (e instanceof vscode.FileSystemError) {
+            return undefined;
+        }
+
+        throw e;
+    }
+
+    return undefined;
+}
+
 async function locateConfigInWorkspace(workspace: vscode.WorkspaceFolder): Promise<ConfigLocation | undefined> {
+    const boardRoot = await locateBoardRoot(workspace);
+
     const settings = vscode.workspace.getConfiguration('zmk', workspace);
     const path = settings.get<string>('configPath');
 
     if (path) {
         const config = vscode.Uri.joinPath(workspace.uri, path);
-        return { workspace, config };
+        return { workspace, config, boardRoot: boardRoot ?? config };
     }
 
     const glob = await vscode.workspace.findFiles(new vscode.RelativePattern(workspace, '**/west.yml'));
@@ -55,9 +90,12 @@ async function locateConfigInWorkspace(workspace: vscode.WorkspaceFolder): Promi
         return undefined;
     }
 
+    const config = dirname(glob[0]);
+
     return {
         workspace,
-        config: dirname(glob[0]),
+        config,
+        boardRoot: boardRoot ?? config,
     };
 }
 

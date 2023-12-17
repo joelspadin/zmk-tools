@@ -160,7 +160,7 @@ async function getZmkHardware(context: vscode.ExtensionContext): Promise<Hardwar
 }
 
 async function getUserHardware(config: ConfigLocation): Promise<Hardware[]> {
-    const meta = await vscode.workspace.findFiles(new vscode.RelativePattern(config.config, '**/*.zmk.yml'));
+    const meta = await vscode.workspace.findFiles(new vscode.RelativePattern(config.boardRoot, '**/*.zmk.yml'));
 
     return Promise.all(
         meta.map(async (uri) => {
