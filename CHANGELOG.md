@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.0
+
+-   Fixed an issue with parsing an empty build.yaml file.
+-   Added code completion for `&mkp` and `&bt BT_DISC`.
+-   Added support for reading `board_root` from `zephyr/module.yml`.
+
 ## 1.3.0
 
 -   Updated ZMK key codes.
