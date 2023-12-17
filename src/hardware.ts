@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import fetch from 'cross-fetch';
 import * as vscode from 'vscode';
 import * as yaml from 'yaml';
 import { ConfigLocation } from './config';
@@ -96,7 +95,7 @@ export async function getHardware(context: vscode.ExtensionContext, config: Conf
 
             return groups;
         },
-        { keyboards: [], controllers: [] }
+        { keyboards: [], controllers: [] },
     );
 
     sortHardware(groups.keyboards);
@@ -146,7 +145,7 @@ async function getZmkHardwareMetadata(context: vscode.ExtensionContext): Promise
     }
 
     vscode.window.showInformationMessage(
-        `Failed to fetch ${METADATA_URL} (${await response.text()}). Falling back to built-in keyboard list.`
+        `Failed to fetch ${METADATA_URL} (${await response.text()}). Falling back to built-in keyboard list.`,
     );
 
     return decode(await fetchResource(context, 'dist/hardware.json'));
@@ -172,6 +171,6 @@ async function getUserHardware(config: ConfigLocation): Promise<Hardware[]> {
                 ...hardware,
                 baseUri: dirname(uri).toString(),
             };
-        })
+        }),
     );
 }

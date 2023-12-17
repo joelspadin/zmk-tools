@@ -39,7 +39,7 @@ const webExtensionConfig = {
     },
     output: {
         filename: '[name].js',
-        path: path.join(__dirname, 'dist/web'),
+        path: path.join(__dirname, './dist/web'),
         libraryTarget: 'commonjs',
         devtoolModuleFilenameTemplate: '../../[resource-path]',
     },
@@ -61,6 +61,9 @@ const webExtensionConfig = {
         rules,
     },
     plugins: [
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1, // disable chunks by default since web extensions must be a single bundle
+        }),
         new webpack.ProvidePlugin({
             process: 'process/browser.js', // provide a shim for the global `process` variable
         }),

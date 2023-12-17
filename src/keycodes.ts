@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
 import markdownEscape = require('markdown-escape');
 
+import { addMissingSystemInclude, IncludeInfo } from './keymap';
 import codes from './zmk/data/hid';
 import oses from './zmk/data/operating-systems';
-import { KeyDefinition } from './zmk/data/hid';
-import { addMissingSystemInclude, IncludeInfo } from './keymap';
+
+type KeyDefinition = (typeof codes)[number];
+type OsKey = keyof KeyDefinition['os'];
 
 const KEYS_INCLUDE = 'dt-bindings/zmk/keys.h';
 
@@ -108,7 +110,7 @@ function addModifierDefinition(def: KeyDefinition) {
 }
 
 function getKeyDocumentation(def: KeyDefinition) {
-    const support = oses.map((os) => `* ${os.title}: ${supportIcon(def.os[os.key])}`);
+    const support = oses.map((os) => `* ${os.title}: ${supportIcon(def.os[os.key as OsKey])}`);
 
     let aliases = '';
     if (def.names.length > 1) {

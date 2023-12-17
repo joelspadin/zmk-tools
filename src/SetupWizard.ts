@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import * as vscode from 'vscode';
 import { addToBuildMatrix, BuildItem } from './build';
 import { ConfigLocation, ConfigMissingError, getConfigLocation } from './config';

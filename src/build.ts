@@ -20,7 +20,7 @@ export function buildItemEquals(a: BuildItem, b: BuildItem): boolean {
 export async function addToBuildMatrix(
     context: vscode.ExtensionContext,
     config: ConfigLocation,
-    builds: BuildItem[]
+    builds: BuildItem[],
 ): Promise<void> {
     const matrix = await readMatrix(context, config);
 
@@ -30,7 +30,7 @@ export async function addToBuildMatrix(
         matrix.contents = new YAMLMap();
     }
 
-    if (!matrix.has('include')) {
+    if (!matrix.has('include') || !matrix.get('include')) {
         matrix.set('include', new YAMLSeq());
     }
 
@@ -57,7 +57,7 @@ async function readMatrix(context: vscode.ExtensionContext, config: ConfigLocati
         const uri = getMatrixUri(config);
         const file = decode(await vscode.workspace.fs.readFile(uri));
 
-        return yaml.parseDocument(file);
+        return parseDocument(file);
     } catch (e) {
         if (e instanceof vscode.FileSystemError) {
             return await getEmptyMatrix(context);
@@ -130,5 +130,21 @@ function stringify(matrix: yaml.Document) {
 async function getEmptyMatrix(context: vscode.ExtensionContext): Promise<yaml.Document> {
     const file = decode(await fetchResource(context, 'templates/build.yaml'));
 
-    return yaml.parseDocument(file);
+    return parseDocument(file);
+}
+
+function parseDocument(source: string) {
+    if (isEmptyDocument(source)) {
+        // YAML parser will fail to parse an empty document. An easy fix is to
+        // add the "include" key that we're going to add later anyways.
+        source += '\ninclude:';
+    }
+
+    return yaml.parseDocument(source, { strict: false });
+}
+
+const HEADER_RE = /((?:^\s*(#.*)?$[\r\n]+)+)^---$/m;
+
+function isEmptyDocument(source: string) {
+    return source.replace(HEADER_RE, '').trim().length === 0;
 }
