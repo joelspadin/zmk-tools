@@ -18,28 +18,28 @@ parameters:
 
 behaviors:
   bindings:
-    # Key Press https://zmk.dev/docs/behaviors/key-press
+    # Key Press https://zmk.dev/docs/keymaps/behaviors/key-press
     - label: '&kp KEYCODE'
       documentation: |
-        [Key press](https://zmk.dev/docs/behaviors/key-press)
+        [Key press](https://zmk.dev/docs/keymaps/behaviors/key-press)
 
         Sends standard key codes on press/release.
       parameters:
         - *keycode
 
-    # Key Toggle https://zmk.dev/docs/behaviors/key-toggle
+    # Key Toggle https://zmk.dev/docs/keymaps/behaviors/key-toggle
     - label: '&kt KEYCODE'
       documentation: |
-        [Key toggle](https://zmk.dev/docs/behaviors/key-toggle)
+        [Key toggle](https://zmk.dev/docs/keymaps/behaviors/key-toggle)
 
         Toggles whether a key is pressed.
       parameters:
         - *keycode
 
-    # Layers https://zmk.dev/docs/behaviors/layers
+    # Layers https://zmk.dev/docs/keymaps/behaviors/layers
     - label: '&mo LAYER'
       documentation: |
-        [Momentary layer](https://zmk.dev/docs/behaviors/layers#momentary-layer)
+        [Momentary layer](https://zmk.dev/docs/keymaps/behaviors/layers#momentary-layer)
 
         Switches to a layer while the key is held.
       parameters:
@@ -47,7 +47,7 @@ behaviors:
 
     - label: '&lt LAYER TAP'
       documentation: |
-        [Layer-tap](https://zmk.dev/docs/behaviors/layers#layer-tap)
+        [Layer-tap](https://zmk.dev/docs/keymaps/behaviors/layers#layer-tap)
 
         * **On hold:** switches to a layer
         * **On tap:** sends a keycode
@@ -61,7 +61,7 @@ behaviors:
 
     - label: '&to'
       documentation: |
-        [To layer](https://zmk.dev/docs/behaviors/layers#to-layer)
+        [To layer](https://zmk.dev/docs/keymaps/behaviors/layers#to-layer)
 
         Enables a layer and disables all other layers except the default layer.
       parameters:
@@ -69,16 +69,16 @@ behaviors:
 
     - label: '&tog LAYER'
       documentation: |
-        [Toggle layer](https://zmk.dev/docs/behaviors/layers#toggle-layer)
+        [Toggle layer](https://zmk.dev/docs/keymaps/behaviors/layers#toggle-layer)
 
         Toggles whether a layer is enabled.
       parameters:
         - *layer
 
-    # Miscellaneous https://zmk.dev/docs/behaviors/misc
+    # Miscellaneous https://zmk.dev/docs/keymaps/behaviors/misc
     - label: '&trans'
       documentation: |
-        [Transparent](https://zmk.dev/docs/behaviors/misc#transparent)
+        [Transparent](https://zmk.dev/docs/keymaps/behaviors/misc#transparent)
 
         Passes key presses down to the next active layer in the stack.
         Does nothing if on the base layer.
@@ -86,15 +86,15 @@ behaviors:
 
     - label: '&none'
       documentation: |
-        [None](https://zmk.dev/docs/behaviors/misc#none)
+        [None](https://zmk.dev/docs/keymaps/behaviors/misc#none)
 
         Ignores a key press so it will *not* be passed down to the next active layer in the stack.
       parameters: []
 
-    # Mod-Tap https://zmk.dev/docs/behaviors/mod-tap
+    # Mod-Tap https://zmk.dev/docs/keymaps/behaviors/mod-tap
     - label: '&mt MODIFIER TAP'
       documentation: |
-        [Mod-tap](https://zmk.dev/docs/behaviors/mod-tap)
+        [Mod-tap](https://zmk.dev/docs/keymaps/behaviors/mod-tap)
 
         * **On hold:** holds a modifier
         * **On tap:** sends a keycode
@@ -106,67 +106,67 @@ behaviors:
           documentation: Key code to send when tapped
           type: keycode
 
-    # Mod-Morph https://zmk.dev/docs/behaviors/mod-morph
+    # Mod-Morph https://zmk.dev/docs/keymaps/behaviors/mod-morph
     - label: '&gresc'
       documentation: |
-        [Grave escape](https://zmk.dev/docs/behaviors/mod-morph)
+        [Grave escape](https://zmk.dev/docs/keymaps/behaviors/mod-morph)
 
         Sends `&kp ESCAPE` normally or `&kp GRAVE` when either Shift or GUI modifiers are held.
       parameters: []
 
-      # Sticky Key https://zmk.dev/docs/behaviors/sticky-key
+      # Sticky Key https://zmk.dev/docs/keymaps/behaviors/sticky-key
     - label: '&sk KEYCODE'
       documentation: |
-        [Sticky key](https://zmk.dev/docs/behaviors/sticky-key)
+        [Sticky key](https://zmk.dev/docs/keymaps/behaviors/sticky-key)
 
         Sends a key and keeps it pressed until another key is pressed.
       parameters:
         - *keycode
 
-    # Sticky Layer https://zmk.dev/docs/behaviors/sticky-layer
+    # Sticky Layer https://zmk.dev/docs/keymaps/behaviors/sticky-layer
     - label: '&sl LAYER'
       documentation: |
-        [Sticky layer](https://zmk.dev/docs/behaviors/sticky-layer)
+        [Sticky layer](https://zmk.dev/docs/keymaps/behaviors/sticky-layer)
 
         Activates a layer until another key is pressed.
       parameters:
         - *layer
 
-    # Caps Word https://zmk.dev/docs/behaviors/caps-word
+    # Caps Word https://zmk.dev/docs/keymaps/behaviors/caps-word
     - label: '&caps_word'
       documentation: |
-        [Caps word](https://zmk.dev/docs/behaviors/caps-word)
+        [Caps word](https://zmk.dev/docs/keymaps/behaviors/caps-word)
 
         Acts like caps lock but automatically deactivates when a "break" key is pressed.
       parameters: []
 
-    # Key Repeat https://zmk.dev/docs/behaviors/key-repeat
+    # Key Repeat https://zmk.dev/docs/keymaps/behaviors/key-repeat
     - label: '&key_repeat'
       documentation: |
-        [Key repeat](https://zmk.dev/docs/behaviors/key-repeat)
+        [Key repeat](https://zmk.dev/docs/keymaps/behaviors/key-repeat)
 
         Sends whatever key code was last sent.
       parameters: []
 
-    # Reset https://zmk.dev/docs/behaviors/reset
+    # Reset https://zmk.dev/docs/keymaps/behaviors/reset
     - label: '&sys_reset'
       documentation: |
-        [Reset](https://zmk.dev/docs/behaviors/reset#reset)
+        [Reset](https://zmk.dev/docs/keymaps/behaviors/reset#reset)
 
         Resets the keyboard and restarts its firmware.
       parameters: []
 
     - label: '&bootloader'
       documentation: |
-        [Bootloader reset](https://zmk.dev/docs/behaviors/reset#bootloader-reset)
+        [Bootloader reset](https://zmk.dev/docs/keymaps/behaviors/reset#bootloader-reset)
 
         Resets the keyboard and puts it into bootloader mode, allowing you to flash new firmware.
       parameters: []
 
-    # Bluetooth https://zmk.dev/docs/behaviors/bluetooth
+    # Bluetooth https://zmk.dev/docs/keymaps/behaviors/bluetooth
     - label: '&bt ACTION'
       documentation: |
-        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+        [Bluetooth command](https://zmk.dev/docs/keymaps/behaviors/bluetooth)
       if:
         - paramsNot: [BT_SEL]
         - paramsNot: [BT_DISC]
@@ -187,7 +187,7 @@ behaviors:
 
     - label: '&bt BT_SEL PROFILE'
       documentation: |
-        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+        [Bluetooth command](https://zmk.dev/docs/keymaps/behaviors/bluetooth)
 
         Select the 0-indexed profile by number.
       if:
@@ -204,7 +204,7 @@ behaviors:
 
     - label: '&bt BT_DISC PROFILE'
       documentation: |
-        [Bluetooth command](https://zmk.dev/docs/behaviors/bluetooth)
+        [Bluetooth command](https://zmk.dev/docs/keymaps/behaviors/bluetooth)
 
         Disconnect from the 0-indexed profile by number, if it's currently connected and inactive.
       if:
@@ -219,10 +219,10 @@ behaviors:
           documentation: 0-based index of the profile from which to disconnect.
           type: integer
 
-    # Output Selection https://zmk.dev/docs/behaviors/outputs
+    # Output Selection https://zmk.dev/docs/keymaps/behaviors/outputs
     - label: '&out ACTION'
       documentation: |
-        [Output selection command](https://zmk.dev/docs/behaviors/outputs)
+        [Output selection command](https://zmk.dev/docs/keymaps/behaviors/outputs)
       parameters:
         - label: ACTION
           include: dt-bindings/zmk/outputs.h
@@ -234,10 +234,10 @@ behaviors:
             - label: OUT_TOG
               documentation: Toggle between USB and BLE.
 
-    # RGB Underglow https://zmk.dev/docs/behaviors/underglow
+    # RGB Underglow https://zmk.dev/docs/keymaps/behaviors/underglow
     - label: '&rgb_ug ACTION'
       documentation: |
-        [RGB underglow command](https://zmk.dev/docs/behaviors/lighting#rgb-underglow)
+        [RGB underglow command](https://zmk.dev/docs/keymaps/behaviors/lighting#rgb-underglow)
       parameters:
         - label: ACTION
           include: dt-bindings/zmk/rgb.h
@@ -265,10 +265,10 @@ behaviors:
             - label: RGB_EFR
               documentation: Cycles the RGB feature's effect reverse.
 
-    # Backlight https://zmk.dev/docs/behaviors/backlight
+    # Backlight https://zmk.dev/docs/keymaps/behaviors/backlight
     - label: '&bl ACTION'
       documentation: |
-        [Backlight command](https://zmk.dev/docs/behaviors/backlight)
+        [Backlight command](https://zmk.dev/docs/keymaps/behaviors/backlight)
       if:
         paramsNot: [BL_SET]
       parameters:
@@ -292,7 +292,7 @@ behaviors:
 
     - label: '&bl BL_SET BRIGHTNESS'
       documentation: |
-        [Backlight command](https://zmk.dev/docs/behaviors/backlight)
+        [Backlight command](https://zmk.dev/docs/keymaps/behaviors/backlight)
 
         Set backlight brightness
       if:
@@ -307,10 +307,10 @@ behaviors:
           documentation: Brightness as a percentage
           type: integer
 
-    # Power Management https://zmk.dev/docs/behaviors/power
+    # Power Management https://zmk.dev/docs/keymaps/behaviors/power
     - label: '&ext_power ACTION'
       documentation: |
-        [External power control](https://zmk.dev/docs/behaviors/power#external-power-control)
+        [External power control](https://zmk.dev/docs/keymaps/behaviors/power#external-power-control)
       parameters:
         - label: ACTION
           include: dt-bindings/zmk/ext_power.h
@@ -322,14 +322,31 @@ behaviors:
             - label: EP_TOG
               documentation: Toggle the external power on/off.
 
-    # Mouse Button Press https://zmk.dev/docs/behaviors/mouse-emulation
+    # Mouse Button Press https://zmk.dev/docs/keymaps/behaviors/mouse-emulation
     - label: '&mkp BUTTON'
       documentation: |
-        [Mouse button press](https://zmk.dev/docs/behaviors/mouse-emulation#mouse-button-press)
+        [Mouse button press](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation#mouse-button-press)
 
         Sends a mouse button press.
       parameters:
         - *mouseButton
+
+    # Soft Off https://zmk.dev/docs/keymaps/behaviors/soft-off
+    - label: '&soft_off'
+      documentation: |
+        [Soft Off](https://zmk.dev/docs/keymaps/behaviors/soft-off)
+
+        Puts the keyboard into an off state. It can be turned back on with the reset button,
+        or on specific keyboards, with a dedicated on button.
+      parameters: []
+
+    # ZMK Studio Unlock https://zmk.dev/docs/keymaps/behaviors/studio-unlock
+    - label: '&studio_unlock'
+      documentation: |
+        [ZMK Studio Unlock](https://zmk.dev/docs/keymaps/behaviors/studio-unlock)
+
+        Grants [ZMK Studio](https://zmk.dev/docs/features/studio) access to make changes to the keyboard.
+      parameters: []
 
   sensor-bindings:
     # Encoder
@@ -347,32 +364,32 @@ behaviors:
           type: keycode
 
 macroBehaviors:
-  # https://zmk.dev/docs/behaviors/macros
+  # https://zmk.dev/docs/keymaps/behaviors/macros
   bindings:
     - label: '&macro_tap'
       documentation: |
-        [Tap mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+        [Tap mode](https://zmk.dev/docs/keymaps/behaviors/macros#binding-activation-mode)
 
         Switch the macro to key tap mode
       parameters: []
 
     - label: '&macro_press'
       documentation: |
-        [Press mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+        [Press mode](https://zmk.dev/docs/keymaps/behaviors/macros#binding-activation-mode)
 
         Switch the macro to key press mode
       parameters: []
 
     - label: '&macro_release'
       documentation: |
-        [Release mode](https://zmk.dev/docs/behaviors/macros#binding-activation-mode)
+        [Release mode](https://zmk.dev/docs/keymaps/behaviors/macros#binding-activation-mode)
 
         Switch the macro to key release mode
       parameters: []
 
     - label: '&macro_tap_time TAP_MS'
       documentation: |
-        [Tap time](https://zmk.dev/docs/behaviors/macros#tap-time)
+        [Tap time](https://zmk.dev/docs/keymaps/behaviors/macros#tap-time)
 
         Change the duration of taps when in tap mode
       parameters:
@@ -382,7 +399,7 @@ macroBehaviors:
 
     - label: '&macro_wait_time WAIT_MS'
       documentation: |
-        [Wait time](https://zmk.dev/docs/behaviors/macros#wait-time)
+        [Wait time](https://zmk.dev/docs/keymaps/behaviors/macros#wait-time)
 
         Change the time to wait between bindings
       parameters:
@@ -392,7 +409,7 @@ macroBehaviors:
 
     - label: '&macro_pause_for_release'
       documentation: |
-        [Pause for release](https://zmk.dev/docs/behaviors/macros#processing-continuation-on-release)
+        [Pause for release](https://zmk.dev/docs/keymaps/behaviors/macros#processing-continuation-on-release)
 
         Pause the macro until the key that triggered the macro is released
       parameters: []
