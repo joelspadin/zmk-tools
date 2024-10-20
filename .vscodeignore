@@ -8,13 +8,12 @@ src/**
 zmk/**
 .gitignore
 .gitmodules
-tree-sitter-devicetree.wasm
 webpack.config.js
 **/tsconfig.json
 **/.editorconfig
-**/.eslintignore
-**/.eslintrc.json
 **/.prettierignore
 **/.prettierrc.json
+**/.vscode-test.*
+**/eslint.config.mjs
 **/*.map
 **/*.ts

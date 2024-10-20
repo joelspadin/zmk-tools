@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const yaml = require('yaml');

@@ -1,5 +1,5 @@
+import markdownEscape from 'markdown-escape';
 import * as vscode from 'vscode';
-import markdownEscape = require('markdown-escape');
 
 import { addMissingSystemInclude, IncludeInfo } from './keymap';
 import codes from './zmk/data/hid';

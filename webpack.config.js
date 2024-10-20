@@ -35,7 +35,6 @@ const webExtensionConfig = {
     target: 'webworker', // extensions run in a webworker context
     entry: {
         extension: './src/extension.ts',
-        'test/suite/index': './src/test/suite/index.ts',
     },
     output: {
         filename: '[name].js',
@@ -108,7 +107,7 @@ const extensionConfig = {
         new CopyPlugin({
             patterns: [
                 require.resolve('web-tree-sitter/tree-sitter.wasm'),
-                path.resolve(__dirname, 'tree-sitter-devicetree.wasm'),
+                require.resolve('tree-sitter-devicetree/tree-sitter-devicetree.wasm'),
             ],
         }),
     ],

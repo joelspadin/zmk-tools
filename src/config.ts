@@ -13,7 +13,6 @@ export interface ConfigLocation {
 interface ZephyrModuleFile {
     build?: {
         settings?: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             board_root?: string;
         };
     };

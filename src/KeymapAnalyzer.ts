@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import type Parser from 'web-tree-sitter';
 import {
     KeymapParser,
     ParseChangedEvent,
@@ -23,7 +24,6 @@ import {
 import * as keymap from './keymap';
 import { IncludeInfo } from './keymap';
 import { stripIncludeQuotes, truncateAtWhitespace } from './util';
-import type Parser = require('web-tree-sitter');
 
 const DIAGNOSTICS_UPDATE_DELAY = 500;
 
@@ -51,7 +51,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
             this.diagnosticCollection,
             this.parser.onDidChangeParse(this.handleParseChanged, this),
             vscode.languages.registerCompletionItemProvider(keymap.SELECTOR, this, ' ', '&', '('),
-            vscode.languages.registerSignatureHelpProvider(keymap.SELECTOR, this, ' ')
+            vscode.languages.registerSignatureHelpProvider(keymap.SELECTOR, this, ' '),
         );
 
         for (const document of vscode.workspace.textDocuments) {
@@ -71,7 +71,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
         document: vscode.TextDocument,
         position: vscode.Position,
         token: vscode.CancellationToken,
-        context: vscode.CompletionContext
+        context: vscode.CompletionContext,
     ): CompletionResult {
         return this.getCompletions(this.getAnalysisArgs(document, position, context));
     }
@@ -80,7 +80,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
         document: vscode.TextDocument,
         position: vscode.Position,
         token: vscode.CancellationToken,
-        context: vscode.SignatureHelpContext
+        context: vscode.SignatureHelpContext,
     ): SignatureResult {
         return this.getSignatureHelp(this.getAnalysisArgs(document, position, context));
     }
@@ -234,7 +234,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
     private getCompletionsForBehaviors(
         args: CompletionArgs,
         validBehaviors: readonly Behavior[],
-        behavior?: Parser.SyntaxNode
+        behavior?: Parser.SyntaxNode,
     ): CompletionResult {
         // Don't trigger completion for behaviors on space if there's a behavior
         // right after the cursor. You're probably just changing alignment.
@@ -259,7 +259,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
             return behaviorsToCompletions(
                 filterBehaviors(validBehaviors, behavior),
                 this.getIncludeInfo(args.document),
-                range
+                range,
             );
         }
 
@@ -270,7 +270,7 @@ export class KeymapAnalyzer implements vscode.CompletionItemProvider, vscode.Sig
         args: CompletionArgs,
         validBehaviors: readonly Behavior[],
         behaviorNode: Parser.SyntaxNode,
-        paramIndex: number
+        paramIndex: number,
     ): CompletionResult {
         // Don't trigger completion for behaviors on space unless there's a behavior
         // right after the cursor. You're probably just changing alignment.
@@ -377,12 +377,12 @@ function findCurrentBehavior({ node, isAfter }: AnalysisArgs): BehaviorLocation 
 function filterBehaviors(
     validBehaviors: readonly Behavior[],
     behavior: Parser.SyntaxNode,
-    options?: { matchFullWord: boolean }
+    options?: { matchFullWord: boolean },
 ): Behavior[] {
     const { matchFullWord } = { matchFullWord: false, ...options };
 
     const text = truncateAtWhitespace(behavior.text);
-    let filtered = validBehaviors.filter((b) => {
+    const filtered = validBehaviors.filter((b) => {
         if (!b.label.startsWith(text)) {
             return false;
         }

@@ -14,7 +14,7 @@
   },
   "icon": "images/zmk_logo.png",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.94.0"
   },
   "categories": [
     "Other"
@@ -71,37 +71,39 @@
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
-    "build-wasm": "tree-sitter build-wasm node_modules/tree-sitter-devicetree",
-    "lint": "eslint src --ext ts",
-    "pretest": "npm run compile",
-    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
     "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. zmk"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/vscode": "^1.85.0",
-    "@types/webpack-env": "^1.18.4",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
-    "@vscode/test-web": "^0.0.49",
+    "@eslint/js": "^9.13.0",
+    "@types/mocha": "^10.0.9",
+    "@types/vscode": "^1.94.0",
+    "@types/webpack-env": "^1.18.5",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/test-web": "^0.0.62",
     "assert": "^2.1.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "mocha": "^10.2.0",
-    "prettier": "^3.1.1",
+    "copy-webpack-plugin": "^12.0.2",
+    "eslint": "^9.13.0",
+    "mocha": "^10.7.3",
+    "prettier": "^3.3.3",
     "process": "^0.11.10",
-    "tree-sitter-cli": "^0.20.8",
-    "tree-sitter-devicetree": "^0.8.0",
+    "tree-sitter-cli": "^0.24.3",
+    "tree-sitter-devicetree": "^0.12.1",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3",
-    "webpack": "^5.89.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.10.0",
+    "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4",
-    "yaml-loader": "^0.8.0"
+    "yaml-loader": "^0.8.1"
   },
   "dependencies": {
     "markdown-escape": "^2.0.0",
-    "web-tree-sitter": "^0.20.8",
-    "yaml": "^2.3.4"
+    "web-tree-sitter": "^0.24.3",
+    "yaml": "^2.6.0"
   }
 }

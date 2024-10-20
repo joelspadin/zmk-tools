@@ -76,7 +76,7 @@ export class SetupWizard implements vscode.Disposable {
             case 'board':
                 return { keyboard, board: keyboard };
 
-            case 'shield':
+            case 'shield': {
                 const board = await this.pickController(hardware, keyboard);
                 if (!board) {
                     return undefined;
@@ -87,6 +87,7 @@ export class SetupWizard implements vscode.Disposable {
                     board,
                     shield: keyboard,
                 };
+            }
         }
     }
 
@@ -196,7 +197,7 @@ async function copyConfigFiles(config: ConfigLocation, keyboard: Keyboard) {
 
 async function exists(uri: vscode.Uri) {
     try {
-        const stat = await vscode.workspace.fs.stat(uri);
+        await vscode.workspace.fs.stat(uri);
         return true;
     } catch (e) {
         if (e instanceof vscode.FileSystemError) {

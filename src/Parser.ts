@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
+import Parser from 'web-tree-sitter';
 import { fetchResource } from './file';
 import { stripQuotes } from './util';
-import Parser = require('web-tree-sitter');
 
 const WHITESPACE_RE = /\s/;
 

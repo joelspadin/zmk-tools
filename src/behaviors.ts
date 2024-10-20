@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import behaviorsFile = require('./behaviors.yaml');
-import Parser = require('web-tree-sitter');
+import Parser from 'web-tree-sitter';
+import behaviorsFile from './behaviors.yaml';
 
 import { getKeycodeCompletions, getModifierCompletions } from './keycodes';
 import { IncludeInfo, addMissingSystemInclude } from './keymap';
