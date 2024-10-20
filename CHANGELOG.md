@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.0
+
+-   Added code completion for `&soft_off` and `&studio_unlock`.
+
 ## 1.4.0
 
 -   Fixed an issue with parsing an empty build.yaml file.
