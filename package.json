@@ -31,7 +31,8 @@
         ],
         "extensions": [
           ".keymap",
-          ".overlay"
+          ".overlay",
+          ".dtsi"
         ],
         "configuration": "./language-configuration.json"
       }
