@@ -33,8 +33,7 @@
           ".keymap",
           ".overlay",
           ".dtsi",
-          ".dts",
-          ".dtso"
+          ".dts"
         ],
         "configuration": "./language-configuration.json"
       }
